@@ -1,7 +1,7 @@
 import CategorizationRenderer from "./components/CategorizationRenderer.vue";
 import AllOfRenderer from "./components/AllOfRenderer.vue";
 import AnyOfRenderer from "./components/AnyOfRenderer.vue";
-import OneOfRenderer from "./components/OneOfRenderer.vue";
+//import OneOfRenderer from "./components/OneOfRenderer.vue";
 import ObjectRenderer from "./components/ObjectRenderer.vue";
 import EnumArrayRenderer from "./components/EnumArrayRenderer.vue";
 import ArrayControlRenderer from "./components/ArrayControlRenderer.vue";
@@ -9,7 +9,7 @@ import ArrayLayoutRenderer from "./components/ArrayLayoutRenderer.vue";
 import BooleanToggleControlRenderer from "./components/BooleanToggleControlRenderer.vue";
 import RadioGroupControlRenderer from "./components/RadioGroupControlRenderer.vue";
 import SliderControlRenderer from "./components/SliderControlRenderer.vue";
-import PasswordControlRenderer from "./components/PasswordControlRenderer.vue";
+//import PasswordControlRenderer from "./components/PasswordControlRenderer.vue";
 import AutocompleteRenderer from "./components/AutocompleteRenderer.vue";
 import {constEntry} from "./components/ConstRenderer.vue";
 
@@ -54,10 +54,10 @@ export const anyOfRendererEntry = {
     renderer: AnyOfRenderer,
     tester: rankWith(3, isAnyOfControl)
 };
-export const OneOfRendererEntry = {
-    renderer: OneOfRenderer,
-    tester: rankWith(2, isOneOfControl)
-};
+// export const OneOfRendererEntry = {
+//     renderer: OneOfRenderer,
+//     tester: rankWith(2, isOneOfControl)
+// };
 
 const hasOneOfItems = (schema: JsonSchema): boolean => (schema?.oneOf ?? [] as JsonSchema[]).every((entry: JsonSchema) => entry.const !== undefined);
 const hasEnumItems = (schema: JsonSchema): boolean => schema.type === 'string' && schema.enum !== undefined;
@@ -89,14 +89,14 @@ export const sliderControlRendererEntry = {
     renderer: SliderControlRenderer,
     tester: rankWith(4, isRangeControl),
 };
-export const passwordControlRendererEntry = {
-    renderer: PasswordControlRenderer,
-    tester: rankWith(2, and(isStringControl, formatIs('password'))),
-};
+// export const passwordControlRendererEntry = {
+//     renderer: PasswordControlRenderer,
+//     tester: rankWith(2, and(isStringControl, formatIs('password'))),
+// };
 
 export const boplusVueVanillaRenderers = [
     categorizationRendererEntry,
-    OneOfRendererEntry,
+   // OneOfRendererEntry,
     allOfRendererEntry,
     anyOfRendererEntry,
     objectRendererEntry,
@@ -104,7 +104,7 @@ export const boplusVueVanillaRenderers = [
     booleanToggleControlRendererEntry,
     radioGroupControlRendererEntry,
     sliderControlRendererEntry,
-    passwordControlRendererEntry,
+    //passwordControlRendererEntry,
     constEntry
 ];
 
