@@ -36,7 +36,7 @@ import { defineComponent } from 'vue';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
-import {useNested} from "../../utils/composition"
+import {useNested} from "./utils"
 import {  DispatchRenderer,  rendererProps, useJsonFormsControlWithDetail,} from '@jsonforms/vue2';
 import type {RendererProps} from '@jsonforms/vue2';
 import {useVanillaControl} from "@jsonforms/vue2-vanilla";
