@@ -188,7 +188,7 @@ const controlRenderer = defineComponent({
             {
               element: elementToDeleteText,
             },
-            (message) =>
+            (message:any) =>
                 message.replace(
                     /\{\{\s?element\s?\}\}/,
                     elementToDeleteText || 'element'
@@ -242,7 +242,7 @@ const controlRenderer = defineComponent({
       }
     },
     childErrors(index: number): ErrorObject[] {
-      return this.control.childErrors.filter((e) => {
+      return this.control.childErrors.filter((e:any) => {
         const errorDataPath = getControlPath(e);
         return errorDataPath.startsWith(
             this.composePaths(this.control.path, `${index}`)
