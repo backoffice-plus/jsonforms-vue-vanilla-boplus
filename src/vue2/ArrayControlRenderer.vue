@@ -77,7 +77,7 @@
           />
           <button
               :class="styles.arrayList.itemDelete"
-              :disabled="!control.enabled || (appliedOptions.restrict &&  arraySchema?.minItems !== undefined && dataLength <= arraySchema.minItems)                    "
+              :disabled="!control.enabled || (appliedOptions.restrict &&  arraySchema.minItems !== undefined && dataLength <= arraySchema.minItems)                    "
               @click="removeItemsClick($event, [index])"
           />
         </td>
