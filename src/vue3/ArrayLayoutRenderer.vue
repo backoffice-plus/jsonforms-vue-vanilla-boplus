@@ -293,7 +293,7 @@ const controlRenderer = defineComponent({
       Promise.resolve(window.confirm('Delete Element: ' + this.childLabelForIndex(index)))
           .then((confirmed: boolean) => {
             if (confirmed) {
-              this.removeItems(this.control.path, [index])();
+              this.removeItems && this.removeItems(this.control.path, [index])();
             }
           });
     }
