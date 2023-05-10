@@ -1,17 +1,17 @@
 {
-  "name": "@backoffice-plus/jsonforms-vue-vanilla-boplus",
-  "version": "0.0.23",
+  "name": "@backoffice-plus/jsonforms-vue-vanilla",
+  "version": "0.0.4",
   "description": "",
   "files": [
     "dist"
   ],
-  "main": "./dist/jsonforms-vue-vanilla-boplus.umd.js",
-  "module": "./dist/jsonforms-vue-vanilla-boplus.es.js",
+  "main": "./dist/jsonforms-vue-vanilla.umd.js",
+  "module": "./dist/jsonforms-vue-vanilla.es.js",
   "types": "./dist/types/src/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/jsonforms-vue-vanilla-boplus.es.js",
-      "require": "./dist/jsonforms-vue-vanilla-boplus.umd.js"
+      "import": "./dist/jsonforms-vue-vanilla.es.js",
+      "require": "./dist/jsonforms-vue-vanilla.umd.js"
     },
     "./style.css": {
       "import": "./dist/style.css",
@@ -23,7 +23,8 @@
     "build": "patch-package && vite build && npm run build:types",
     "build:types": "vue-tsc --project tsconfig.types.json --declaration --emitDeclarationOnly --skipLibCheck --outDir dist/types ",
     "typecheck": "vue-tsc --project tsconfig.types.json --noEmit --skipLibCheck",
-    "test": "vitest"
+    "test": "vitest",
+    "publish": "npm run build && npm publish --public"
   },
   "keywords": [],
   "author": "David Wolter <david@dampfer.net>",
