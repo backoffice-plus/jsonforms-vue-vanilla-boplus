@@ -1,61 +1,54 @@
 <template>
-
-  <div  :class="styles.objectAddProps.root" v-if="control.visible">
-
+  <div v-if="control.visible" :class="styles.objectAddProps.root">
     <header :class="styles.objectAddProps.toolbar">
       <label>{{ additionalPropertiesTitle }}</label>
 
       <div>
         <input
-            :required="true"
-            type="text"
-            v-model="newPropertyName"
-            :placeholder="placeholder"
-            :disabled="!control.enabled"
-        >
-        <div :class="styles.control.error" v-if="newPropertyErrors.length">
+          v-model="newPropertyName"
+          :required="true"
+          type="text"
+          :placeholder="placeholder"
+          :disabled="!control.enabled"
+        />
+        <div v-if="newPropertyErrors.length" :class="styles.control.error">
           {{ newPropertyErrors ? newPropertyErrors : null }}
         </div>
       </div>
 
       <div>
         <button
-            @click="addProperty"
-            :disabled="addPropertyDisabled"
-            v-text="'+'"
+          :disabled="addPropertyDisabled"
+          @click="addProperty"
+          v-text="'+'"
         />
       </div>
-
     </header>
 
-    <section
-        :class="styles.objectAddProps.items"
-    >
-
+    <section :class="styles.objectAddProps.items">
       <div
-          v-for="(element, index) in additionalPropertyItems"
-          :key="`${index}`"
+        v-for="(element, index) in additionalPropertyItems"
+        :key="`${index}`"
       >
         <dispatch-renderer
-            v-if="element.schema && element.uischema"
-            :schema="element.schema"
-            :uischema="element.uischema"
-            :path="element.path"
-            :enabled="control.enabled"
-            :renderers="control.renderers"
-            :cells="control.cells"
+          v-if="element.schema && element.uischema"
+          :schema="element.schema"
+          :uischema="element.uischema"
+          :path="element.path"
+          :enabled="control.enabled"
+          :renderers="control.renderers"
+          :cells="control.cells"
         />
 
         <button
-            :disabled="removePropertyDisabled"
-            @click="removeProperty(element.propertyName)"
-            v-if="control.enabled"
-            v-text="'x'"
+          v-if="control.enabled"
+          :disabled="removePropertyDisabled"
+          @click="removeProperty(element.propertyName)"
+          v-text="'x'"
         />
       </div>
     </section>
   </div>
-
 </template>
 
 <script lang="ts">
@@ -76,7 +69,10 @@ import type {
   UISchemaElement,
 } from '@jsonforms/core';
 
-import {  DispatchRenderer,  useJsonFormsControlWithDetail,} from '@jsonforms/vue';
+import {
+  DispatchRenderer,
+  useJsonFormsControlWithDetail,
+} from '@jsonforms/vue';
 import type Ajv from 'ajv';
 import type { ValidateFunction } from 'ajv';
 import get from 'lodash/get';
@@ -84,10 +80,14 @@ import isPlainObject from 'lodash/isPlainObject';
 import startCase from 'lodash/startCase';
 import { defineComponent, ref } from 'vue';
 import type { PropType, Ref } from 'vue';
-import {useStyles} from "@jsonforms/vue-vanilla";
-import {defaultStyles} from "../utils";
-import { useAjv, useControlAppliedOptions, useTranslator } from '../utils';
-import merge from "lodash/merge";
+import { useStyles } from '@jsonforms/vue-vanilla';
+import {
+  defaultStyles,
+  useAjv,
+  useControlAppliedOptions,
+  useTranslator,
+} from '../utils';
+import merge from 'lodash/merge';
 
 /**
  * https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/complex/components/AdditionalProperties.vue
@@ -103,8 +103,8 @@ interface AdditionalPropertyType {
 
 const reuseAjvForSchema = (ajv: Ajv, schema: JsonSchema): Ajv => {
   if (
-      Object.prototype.hasOwnProperty.call(schema, 'id') ||
-      Object.prototype.hasOwnProperty.call(schema, '$id')
+    Object.prototype.hasOwnProperty.call(schema, 'id') ||
+    Object.prototype.hasOwnProperty.call(schema, '$id')
   ) {
     ajv.removeSchema(schema);
   }
@@ -112,7 +112,7 @@ const reuseAjvForSchema = (ajv: Ajv, schema: JsonSchema): Ajv => {
 };
 
 export default defineComponent({
-  name: 'additional-properties',
+  name: 'AdditionalProperties',
   components: {
     DispatchRenderer,
   },
@@ -124,26 +124,26 @@ export default defineComponent({
   },
   setup(props) {
     const control = props.input.control as any as Ref<
-        typeof props.input.control
+      typeof props.input.control
     >;
     const reservedPropertyNames = Object.keys(
-        control.value.schema.properties || {}
+      control.value.schema.properties || {}
     );
 
     const additionalKeys = Object.keys(control.value?.data ?? {}).filter(
-        (k) => !reservedPropertyNames.includes(k)
+      (k) => !reservedPropertyNames.includes(k)
     );
 
     const toAdditionalPropertyType = (
-        propName: string,
-        propValue: any
+      propName: string,
+      propValue: any
     ): AdditionalPropertyType => {
       let propSchema: JsonSchema | undefined = undefined;
       let propUiSchema: UISchemaElement | undefined = undefined;
 
       if (control.value.schema.patternProperties) {
         const matchedPattern = Object.keys(
-            control.value.schema.patternProperties
+          control.value.schema.patternProperties
         ).find((pattern) => new RegExp(pattern).test(propName));
         if (matchedPattern) {
           propSchema = control.value.schema.patternProperties[matchedPattern];
@@ -151,8 +151,8 @@ export default defineComponent({
       }
 
       if (
-          !propSchema &&
-          typeof control.value.schema.additionalProperties === 'object'
+        !propSchema &&
+        typeof control.value.schema.additionalProperties === 'object'
       ) {
         propSchema = control.value.schema.additionalProperties;
       }
@@ -161,11 +161,11 @@ export default defineComponent({
         // can't find the propertySchema so use the schema based on the value
         // this covers case where the data in invalid according to the schema
         propSchema = Generate.jsonSchema(
-            { prop: propValue },
-            {
-              additionalProperties: false,
-              required: () => false,
-            }
+          { prop: propValue },
+          {
+            additionalProperties: false,
+            required: () => false,
+          }
         ).properties?.prop;
       }
 
@@ -173,10 +173,10 @@ export default defineComponent({
         if (propSchema.type === 'object' || propSchema.type === 'array') {
           propUiSchema = Generate.uiSchema(propSchema, 'Group');
           (propUiSchema as GroupLayout).label =
-              propSchema.title ?? startCase(propName);
+            propSchema.title ?? startCase(propName);
         } else {
           propUiSchema = createControlElement(
-              control.value.path + '/' + encode(propName)
+            control.value.path + '/' + encode(propName)
           );
         }
       }
@@ -194,8 +194,8 @@ export default defineComponent({
 
     additionalKeys.forEach((propName) => {
       const additionalProperty = toAdditionalPropertyType(
-          propName,
-          control.value.data[propName]
+        propName,
+        control.value.data[propName]
       );
       additionalPropertyItems.value.push(additionalProperty);
     });
@@ -206,7 +206,7 @@ export default defineComponent({
 
     let propertyNameSchema: JsonSchema7 | undefined = undefined;
     let propertyNameValidator: ValidateFunction<unknown> | undefined =
-        undefined;
+      undefined;
 
     // TODO: create issue against jsonforms to add propertyNames into the JsonSchema interface
     // propertyNames exist in draft-6 but not defined in the JsonSchema
@@ -215,8 +215,8 @@ export default defineComponent({
     }
 
     if (
-        typeof control.value.schema.additionalProperties !== 'object' &&
-        typeof control.value.schema.patternProperties === 'object'
+      typeof control.value.schema.additionalProperties !== 'object' &&
+      typeof control.value.schema.patternProperties === 'object'
     ) {
       const matchPatternPropertiesKeys: JsonSchema7 = {
         type: 'string',
@@ -224,14 +224,14 @@ export default defineComponent({
       };
 
       propertyNameSchema = propertyNameSchema
-          ? { allOf: [propertyNameSchema, matchPatternPropertiesKeys] }
-          : matchPatternPropertiesKeys;
+        ? { allOf: [propertyNameSchema, matchPatternPropertiesKeys] }
+        : matchPatternPropertiesKeys;
     }
 
     if (propertyNameSchema) {
       propertyNameValidator = reuseAjvForSchema(
-          ajv,
-          propertyNameSchema
+        ajv,
+        propertyNameSchema
       ).compile(propertyNameSchema);
     }
 
@@ -258,57 +258,57 @@ export default defineComponent({
   computed: {
     addPropertyDisabled(): boolean {
       return (
-          // add is disabled because the overall control is disabled
-          !this.control.enabled ||
-          // add is disabled because of contraints
-          (this.appliedOptions.restrict && this.maxPropertiesReached) ||
-          // add is disabled because there are errors for the new property name or it is not specified
-          this.newPropertyErrors.length > 0 ||
-          !this.newPropertyName
+        // add is disabled because the overall control is disabled
+        !this.control.enabled ||
+        // add is disabled because of contraints
+        (this.appliedOptions.restrict && this.maxPropertiesReached) ||
+        // add is disabled because there are errors for the new property name or it is not specified
+        this.newPropertyErrors.length > 0 ||
+        !this.newPropertyName
       );
     },
     maxPropertiesReached(): boolean {
       return (
-          this.control.schema.maxProperties !== undefined && // we have maxProperties constraint
-          this.control.data && // we have data to check
-          // the current number of properties in the object is greater or equals to the maxProperties
-          Object.keys(this.control.data).length >=
+        this.control.schema.maxProperties !== undefined && // we have maxProperties constraint
+        this.control.data && // we have data to check
+        // the current number of properties in the object is greater or equals to the maxProperties
+        Object.keys(this.control.data).length >=
           this.control.schema.maxProperties
       );
     },
     removePropertyDisabled(): boolean {
       return (
-          // add is disabled because the overall control is disabled
-          !this.control.enabled ||
-          // add is disabled because of contraints
-          (this.appliedOptions.restrict && this.minPropertiesReached)
+        // add is disabled because the overall control is disabled
+        !this.control.enabled ||
+        // add is disabled because of contraints
+        (this.appliedOptions.restrict && this.minPropertiesReached)
       );
     },
     minPropertiesReached(): boolean {
       return (
-          this.control.schema.minProperties !== undefined && // we have minProperties constraint
-          this.control.data && // we have data to check
-          // the current number of properties in the object is less or equals to the minProperties
-          Object.keys(this.control.data).length <=
+        this.control.schema.minProperties !== undefined && // we have minProperties constraint
+        this.control.data && // we have data to check
+        // the current number of properties in the object is less or equals to the minProperties
+        Object.keys(this.control.data).length <=
           this.control.schema.minProperties
       );
     },
     newPropertyErrors(): string[] {
       if (this.newPropertyName) {
         const messages = this.propertyNameValidator
-            ? (validate(this.propertyNameValidator, this.newPropertyName)
-                .map((error) => error.message)
-                .filter((message) => message) as string[])
-            : [];
+          ? (validate(this.propertyNameValidator, this.newPropertyName)
+              .map((error) => error.message)
+              .filter((message) => message) as string[])
+          : [];
         if (
-            this.reservedPropertyNames.includes(this.newPropertyName) ||
-            this.additionalPropertyItems.find(
-                (ap:any) => ap.propertyName === this.newPropertyName
-            ) !== undefined
+          this.reservedPropertyNames.includes(this.newPropertyName) ||
+          this.additionalPropertyItems.find(
+            (ap: any) => ap.propertyName === this.newPropertyName
+          ) !== undefined
         ) {
           // already defined
           messages.push(
-              `Property '${this.newPropertyName}' is already defined`
+            `Property '${this.newPropertyName}' is already defined`
           );
         }
 
@@ -338,33 +338,33 @@ export default defineComponent({
       const additionalProperties = this.control.schema.additionalProperties;
 
       const label =
-          typeof additionalProperties === 'object' &&
-          Object.prototype.hasOwnProperty.call(additionalProperties, 'title')
-              ? additionalProperties.title ?? 'Additional Properties'
-              : 'Additional Properties';
+        typeof additionalProperties === 'object' &&
+        Object.prototype.hasOwnProperty.call(additionalProperties, 'title')
+          ? additionalProperties.title ?? 'Additional Properties'
+          : 'Additional Properties';
 
       return this.t(this.i18nKey('title'), label);
     },
     addToLabel(): string {
       return this.t(
-          this.i18nKey('btn.add'),
-          'Add to ${additionalProperties.title}',
-          {
-            additionalProperties: {
-              title: this.additionalPropertiesTitle,
-            },
-          }
+        this.i18nKey('btn.add'),
+        'Add to ${additionalProperties.title}',
+        {
+          additionalProperties: {
+            title: this.additionalPropertiesTitle,
+          },
+        }
       );
     },
     deleteLabel(): string {
       return this.t(
-          this.i18nKey('btn.delete'),
-          'Delete from ${additionalProperties.title}',
-          {
-            additionalProperties: {
-              title: this.additionalPropertiesTitle,
-            },
-          }
+        this.i18nKey('btn.delete'),
+        'Delete from ${additionalProperties.title}',
+        {
+          additionalProperties: {
+            title: this.additionalPropertiesTitle,
+          },
+        }
       );
     },
   },
@@ -376,13 +376,13 @@ export default defineComponent({
         if (typeof this.control.data === 'object') {
           const keys = Object.keys(newData);
           let hasChanges = false;
-          this.additionalPropertyItems.forEach((ap:any) => {
+          this.additionalPropertyItems.forEach((ap: any) => {
             if (
-                ap.schema &&
-                (!keys.includes(ap.propertyName) ||
-                    newData[ap.propertyName] === undefined ||
-                    (newData[ap.propertyName] === null &&
-                        ap.schema.type !== 'null')) // createDefaultValue will return null only when the ap.schema.type is 'null'
+              ap.schema &&
+              (!keys.includes(ap.propertyName) ||
+                newData[ap.propertyName] === undefined ||
+                (newData[ap.propertyName] === null &&
+                  ap.schema.type !== 'null')) // createDefaultValue will return null only when the ap.schema.type is 'null'
             ) {
               const newValue = createDefaultValue(ap.schema);
               hasChanges = newData[ap.propertyName] !== newValue;
@@ -401,17 +401,17 @@ export default defineComponent({
     composePaths,
     i18nKey(key: string): string {
       return getI18nKey(
-          this.control.schema,
-          this.control.uischema,
-          this.control.path,
-          `additionalProperties.${key}`
+        this.control.schema,
+        this.control.uischema,
+        this.control.path,
+        `additionalProperties.${key}`
       );
     },
     addProperty() {
       if (this.newPropertyName) {
         const additionalProperty = this.toAdditionalPropertyType(
-            this.newPropertyName,
-            undefined
+          this.newPropertyName,
+          undefined
         );
         if (additionalProperty) {
           this.additionalPropertyItems = [
@@ -421,11 +421,11 @@ export default defineComponent({
         }
 
         if (
-            typeof this.control.data === 'object' &&
-            additionalProperty.schema
+          typeof this.control.data === 'object' &&
+          additionalProperty.schema
         ) {
           this.control.data[this.newPropertyName] = createDefaultValue(
-              additionalProperty.schema
+            additionalProperty.schema
           );
           // we need always to preserve the key even when the value is "empty"
           this.input.handleChange(this.control.path, this.control.data);
@@ -435,7 +435,7 @@ export default defineComponent({
     },
     removeProperty(propName: string): void {
       this.additionalPropertyItems = this.additionalPropertyItems.filter(
-          (d:any) => d.propertyName !== propName
+        (d: any) => d.propertyName !== propName
       );
       if (typeof this.control.data === 'object') {
         delete this.control.data[propName];

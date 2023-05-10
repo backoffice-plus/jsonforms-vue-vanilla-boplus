@@ -1,4 +1,20 @@
 {
-  "files": [],
-  "references": [{ "path": "./tsconfig.config.json" }, { "path": "./tsconfig.app.json" }]
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "skipLibCheck": true,
+    "strict": true,
+    "declaration": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "outDir": "./lib",
+    "types": ["node", "vue"],
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+  },
+  "exclude": ["node_modules", "lib"]
 }

@@ -1,73 +1,78 @@
 <template>
   <div v-if="control.visible" :class="styles.arrayList.root">
-
     <label :class="styles.arrayList.label">
       {{ computedLabel }}
     </label>
 
+    <div :class="styles.arrayList.itemToolbar">
+      <select v-model="currentlyExpanded">
+        <option
+          v-for="(_element, index) in control.data"
+          :key="`${control.path}-${index}`"
+          :class="styles.arrayList.item"
+          :value="index"
+          v-text="
+            '' +
+            (index + 1) +
+            '. ' +
+            childLabelForIndex(index) +
+            (errorsPerChild[index]
+              ? ' (' + errorsPerChild[index].length + ' Errors)'
+              : '')
+          "
+        />
+      </select>
 
-      <div :class="styles.arrayList.itemToolbar">
+      <button
+        :class="styles.arrayList.addButton"
+        :disabled="
+          !control.enabled ||
+          (appliedOptions.restrict &&
+            arraySchema.maxItems !== undefined &&
+            dataLength >= arraySchema.maxItems)
+        "
+        @click="addButtonClick"
+      >
+        +
+      </button>
+    </div>
 
-        <select v-model="currentlyExpanded">
-          <option
-              v-for="(_element, index) in control.data"
-              :key="`${control.path}-${index}`"
-              :class="styles.arrayList.item"
-              v-text="'' + (index+1) +'. '+ childLabelForIndex(index) + (errorsPerChild[index] ? ' ('+ errorsPerChild[index].length +' Errors)' : '')"
-              :value="index"
-          />
-        </select>
+    <div v-if="dataLength > 0" :class="styles.arrayList.itemContent">
+      <fieldset class="group">
+        <legend class="group-label">
+          {{ childLabelForIndex(currentlyExpanded) }}
+        </legend>
 
-        <button
-            :class="styles.arrayList.addButton"
+        <dispatch-renderer
+          :schema="control.schema"
+          :uischema="foundUISchema"
+          :path="composePaths(control.path, `${currentlyExpanded}`)"
+          :enabled="control.enabled"
+          :renderers="control.renderers"
+          :cells="control.cells"
+        />
+
+        <footer>
+          <button
+            v-if="dataLength > 0"
+            :class="styles.arrayList.itemDelete"
             :disabled="
-                  !control.enabled ||
-                  (appliedOptions.restrict && arraySchema.maxItems !== undefined && dataLength >= arraySchema.maxItems)
-                "
-            @click="addButtonClick"
-        >
-          +
-        </button>
-
-      </div>
-
-      <div v-if="dataLength > 0" :class="styles.arrayList.itemContent">
-
-        <fieldset class="group">
-          <legend class="group-label">{{  childLabelForIndex(currentlyExpanded)  }}</legend>
-
-          <dispatch-renderer
-              :schema="control.schema"
-              :uischema="foundUISchema"
-              :path="composePaths(control.path, `${currentlyExpanded}`)"
-              :enabled="control.enabled"
-              :renderers="control.renderers"
-              :cells="control.cells"
+              !control.enabled ||
+              (appliedOptions.restrict &&
+                arraySchema.minItems !== undefined &&
+                dataLength <= arraySchema.minItems)
+            "
+            @click="onDelete(currentlyExpanded)"
           />
+        </footer>
+      </fieldset>
+    </div>
 
-          <footer>
-            <button
-                :class="styles.arrayList.itemDelete"
-                :disabled="!control.enabled || (appliedOptions.restrict && arraySchema.minItems !== undefined && dataLength <= arraySchema.minItems)"
-                @click="onDelete(currentlyExpanded)"
-                v-if="dataLength > 0"
-            />
-          </footer>
+    <div v-if="dataLength === 0" :class="styles.arrayList.noData">No data</div>
 
-        </fieldset>
-      </div>
-
-      <div v-if="dataLength === 0" :class="styles.arrayList.noData">
-        No data
-      </div>
-
-
-
-
-      <div :class="styles.control.error" v-if="control.childErrors.length > 0">
-        <span v-text="control.childErrors.length +' Errors'" />
-      </div>
-
+    <div v-if="control.childErrors.length > 0" :class="styles.control.error">
+      <span v-text="control.childErrors.length + ' Errors'" />
+    </div>
   </div>
 </template>
 
@@ -80,7 +85,6 @@ import {
   findUISchema,
   Resolve,
   getControlPath,
-  getI18nKey,
 } from '@jsonforms/core';
 import type {
   JsonFormsRendererRegistryEntry,
@@ -95,9 +99,7 @@ import {
   rendererProps,
   useJsonFormsArrayControl,
 } from '@jsonforms/vue';
-import type {
-  RendererProps,
-} from '@jsonforms/vue';
+import type { RendererProps } from '@jsonforms/vue';
 import {
   useBoPlusArrayControl,
   useNested,
@@ -106,18 +108,15 @@ import {
 } from './utils';
 //import { ValidationIcon, ValidationBadge } from '../controls/components/index';
 import type { ErrorObject } from 'ajv';
-import merge from 'lodash/merge';
-import {ControlWrapper, useVanillaArrayControl, useVanillaControl} from "@jsonforms/vue-vanilla";
-
+import { ControlWrapper, useVanillaArrayControl } from '@jsonforms/vue-vanilla';
 
 /**
  * https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/layouts/ArrayLayoutRenderer.vue
  */
 
-
 type I18nArrayLayoutKey = keyof typeof i18nDefaultMessages.arraylayout;
 const controlRenderer = defineComponent({
-  name: 'array-layout-renderer',
+  name: 'ArrayLayoutRenderer',
   components: {
     ControlWrapper,
     DispatchRenderer,
@@ -128,9 +127,11 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    const control = useBoPlusArrayControl(useVanillaArrayControl(useJsonFormsArrayControl(props)));
+    const control = useBoPlusArrayControl(
+      useVanillaArrayControl(useJsonFormsArrayControl(props))
+    );
     const currentlyExpanded = ref<null | number>(
-        control.appliedOptions.value.initCollapsed ? null : 0
+      control.appliedOptions.value.initCollapsed ? null : 0
     );
     // const expansionPanelsProps = computed(() =>
     //     merge(
@@ -153,11 +154,11 @@ const controlRenderer = defineComponent({
   computed: {
     addDisabled(): boolean {
       return (
-          !this.control.enabled ||
-          (this.appliedOptions.restrict &&
-              this.arraySchema !== undefined &&
-              this.arraySchema.maxItems !== undefined &&
-              this.dataLength >= this.arraySchema.maxItems)
+        !this.control.enabled ||
+        (this.appliedOptions.restrict &&
+          this.arraySchema !== undefined &&
+          this.arraySchema.maxItems !== undefined &&
+          this.dataLength >= this.arraySchema.maxItems)
       );
     },
     dataLength(): number {
@@ -165,20 +166,20 @@ const controlRenderer = defineComponent({
     },
     foundUISchema(): UISchemaElement {
       return findUISchema(
-          this.control.uischemas,
-          this.control.schema,
-          this.control.uischema.scope,
-          this.control.path,
-          undefined,
-          this.control.uischema,
-          this.control.rootSchema
+        this.control.uischemas,
+        this.control.schema,
+        this.control.uischema.scope,
+        this.control.path,
+        undefined,
+        this.control.uischema,
+        this.control.rootSchema
       );
     },
     arraySchema(): JsonSchema | undefined {
       return Resolve.schema(
-          this.control.rootSchema,
-          this.control.uischema.scope,
-          this.control.rootSchema
+        this.control.rootSchema,
+        this.control.uischema.scope,
+        this.control.rootSchema
       );
     },
     hideAvatar(): boolean {
@@ -192,15 +193,15 @@ const controlRenderer = defineComponent({
         moveUp: this.translateLabel('moveUp'),
         moveDown: this.translateLabel('moveDown'),
         dialogTitle: this.translateLabel(
-            'dialogTitle',
-            {
-              element: elementToDeleteText,
-            },
-            (message:any) =>
-                message.replace(
-                    /\{\{\s?element\s?\}\}/,
-                    elementToDeleteText || 'element'
-                )
+          'dialogTitle',
+          {
+            element: elementToDeleteText,
+          },
+          (message: any) =>
+            message.replace(
+              /\{\{\s?element\s?\}\}/,
+              elementToDeleteText || 'element'
+            )
         ),
         dialogText: this.translateLabel('dialogText'),
         dialogCancel: this.translateLabel('dialogCancel'),
@@ -211,10 +212,12 @@ const controlRenderer = defineComponent({
     //
     errorsPerChild() {
       const r = {} as Record<string, Array<any>>;
-      this.control.childErrors.forEach((error:any) => {
-        const found = error.instancePath.match('\/'+this.control.path+'\/(\\d+)')
-        if(found && found[1]) {
-          if(!r[found[1]]) {
+      this.control.childErrors.forEach((error: any) => {
+        const found = error.instancePath.match(
+          '\/' + this.control.path + '\/(\\d+)'
+        );
+        if (found && found[1]) {
+          if (!r[found[1]]) {
             r[found[1]] = [];
           }
           r[found[1]].push(error);
@@ -222,15 +225,15 @@ const controlRenderer = defineComponent({
       });
 
       return r;
-    }
+    },
   },
   methods: {
     composePaths,
     createDefaultValue,
     addButtonClick() {
       this.addItem(
-          this.control.path,
-          createDefaultValue(this.control.schema)
+        this.control.path,
+        createDefaultValue(this.control.schema)
       )();
       if (!this.appliedOptions.collapseNewItems && this.control.data?.length) {
         this.currentlyExpanded = this.dataLength - 1;
@@ -250,31 +253,31 @@ const controlRenderer = defineComponent({
       }
     },
     childErrors(index: number): ErrorObject[] {
-      return this.control.childErrors.filter((e:any) => {
+      return this.control.childErrors.filter((e: any) => {
         const errorDataPath = getControlPath(e);
         return errorDataPath.startsWith(
-            this.composePaths(this.control.path, `${index}`)
+          this.composePaths(this.control.path, `${index}`)
         );
       });
     },
     translateLabel(
-        labelType: I18nArrayLayoutKey,
-        additionalContext: Record<string, unknown> | undefined = undefined,
-        transformMessage: (message: string) => string = (text) => text
+      labelType: I18nArrayLayoutKey,
+      _additionalContext: Record<string, unknown> | undefined = undefined,
+      _transformMessage: (message: string) => string = (text) => text
     ): string {
-      const i18nKey = getI18nKey(
-          this.arraySchema,
-          this.control.uischema,
-          this.control.path,
-          labelType
-      );
-      const context = {
+      /*const i18nKey = getI18nKey(
+        this.arraySchema,
+        this.control.uischema,
+        this.control.path,
+        labelType
+      );*/
+      /*const context = {
         schema: this.control.schema,
         uischema: this.control.uischema,
         path: this.control.path,
         data: this.control.data,
         ...additionalContext,
-      };
+      };*/
       //:TODO add translation
       return i18nDefaultMessages.arraylayout[labelType];
       //const translation = this.t(i18nKey, undefined, context);
@@ -289,14 +292,17 @@ const controlRenderer = defineComponent({
     },
 
     //
-    onDelete(index: number) {
-      Promise.resolve(window.confirm('Delete Element: ' + this.childLabelForIndex(index)))
-          .then((confirmed: boolean) => {
-            if (confirmed) {
-              this.removeItems(this.control.path, [index])();
-            }
-          });
-    }
+    onDelete(index: number | null) {
+      if (index === null) return;
+
+      Promise.resolve(
+        window.confirm('Delete Element: ' + this.childLabelForIndex(index))
+      ).then((confirmed: boolean) => {
+        if (confirmed) {
+          this.removeItems?.(this.control.path, [index])();
+        }
+      });
+    },
   },
 });
 export default controlRenderer;

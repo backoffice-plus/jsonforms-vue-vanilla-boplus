@@ -1,13 +1,10 @@
 <template>
-
   <div :class="styles.categorization.root">
-
     <div :class="styles.categorization.category">
-
       <div
-          v-for="(item, index) in categories"
-          :key="`tab-${index}`"
-          @click="selected=index"
+        v-for="(item, index) in categories"
+        :key="`tab-${index}`"
+        @click="selected = index"
       >
         <!--
         :TODO add translation
@@ -17,15 +14,13 @@
         -->
 
         <button
-            :class="[selected===index?styles.categorization.selected:'']"
-            :disabled="!item.isEnabled"
+          :class="[selected === index ? styles.categorization.selected : '']"
+          :disabled="!item.isEnabled"
         >
-<!--          {{ item.element.i18n ? item.element.i18n : item.element.label }}-->
+          <!--          {{ item.element.i18n ? item.element.i18n : item.element.label }}-->
           {{ item.element.label }}
         </button>
-
       </div>
-
     </div>
 
     <div :class="styles.categorization.panel">
@@ -38,39 +33,49 @@
         :cells="layout.cells"
       />
     </div>
-
   </div>
-
 </template>
 
 
 <script lang="ts">
-import {defineComponent} from 'vue';
-import {isVisible,  rankWith,  createAjv, isEnabled, and, categorizationHasCategory, uiTypeIs} from '@jsonforms/core';
-import type {JsonFormsRendererRegistryEntry, Layout, Category, Categorization, UISchemaElement} from '@jsonforms/core';
-import {rendererProps, useJsonFormsLayout, DispatchRenderer} from '@jsonforms/vue';
-import type {RendererProps} from '@jsonforms/vue';
-import {ControlWrapper} from "@jsonforms/vue-vanilla";
-import {useBoPlusLayout} from "./utils";
-
+import { defineComponent } from 'vue';
+import {
+  isVisible,
+  rankWith,
+  createAjv,
+  isEnabled,
+  and,
+  categorizationHasCategory,
+  uiTypeIs,
+} from '@jsonforms/core';
+import type {
+  JsonFormsRendererRegistryEntry,
+  Layout,
+  Category,
+  Categorization,
+  UISchemaElement,
+} from '@jsonforms/core';
+import {
+  rendererProps,
+  useJsonFormsLayout,
+  DispatchRenderer,
+} from '@jsonforms/vue';
+import type { RendererProps } from '@jsonforms/vue';
+import { ControlWrapper } from '@jsonforms/vue-vanilla';
+import { useBoPlusLayout } from './utils';
 
 /**
  * @see https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/layouts/CategorizationRenderer.vue
  */
 
 const layoutRenderer = defineComponent({
-  name: 'categorization-renderer',
+  name: 'CategorizationRenderer',
   components: {
     ControlWrapper,
-    DispatchRenderer
+    DispatchRenderer,
   },
   props: {
-    ...rendererProps<Layout>()
-  },
-  data() {
-    return {
-      selected: 0
-    }
+    ...rendererProps<Layout>(),
   },
   setup(props: RendererProps<Layout>) {
     //const activeCategory = ref(0);
@@ -83,29 +88,42 @@ const layoutRenderer = defineComponent({
       //t,
     };
   },
+  data() {
+    return {
+      selected: 0,
+    };
+  },
 
   computed: {
-    currentUischema():UISchemaElement {
-      return this.categories[this.selected].element
+    currentUischema(): UISchemaElement {
+      return this.categories[this.selected].element;
     },
     categories(): any {
       return (this.layout.uischema as Categorization).elements
-        .filter((category: Category | Categorization) => isVisible(category, this.layout.data, this.layout.path, this.ajv))
+        .filter((category: Category | Categorization) =>
+          isVisible(category, this.layout.data, this.layout.path, this.ajv)
+        )
         .map((category: Category | Categorization) => {
           return {
             element: category,
-            isEnabled: isEnabled(category, this.layout.data, this.layout.path, this.ajv)
-          }
+            isEnabled: isEnabled(
+              category,
+              this.layout.data,
+              this.layout.path,
+              this.ajv
+            ),
+          };
         });
-    }
-  }
+    },
+  },
 });
 
 export default layoutRenderer;
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: layoutRenderer,
-  tester: rankWith(2, and(uiTypeIs('Categorization'), categorizationHasCategory)),
+  tester: rankWith(
+    2,
+    and(uiTypeIs('Categorization'), categorizationHasCategory)
+  ),
 };
-
-
 </script>

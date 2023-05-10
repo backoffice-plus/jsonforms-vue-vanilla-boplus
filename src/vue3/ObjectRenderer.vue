@@ -1,17 +1,17 @@
 <template>
   <div v-if="control.visible">
     <dispatch-renderer
-        :visible="control.visible"
-        :enabled="control.enabled"
-        :schema="control.schema"
-        :uischema="detailUiSchema"
-        :path="control.path"
-        :renderers="control.renderers"
-        :cells="control.cells"
+      :visible="control.visible"
+      :enabled="control.enabled"
+      :schema="control.schema"
+      :uischema="detailUiSchema"
+      :path="control.path"
+      :renderers="control.renderers"
+      :cells="control.cells"
     />
     <additional-properties
-        v-if="hasAdditionalProperties && showAdditionalProperties"
-        :input="input"
+      v-if="hasAdditionalProperties && showAdditionalProperties"
+      :input="input"
     ></additional-properties>
   </div>
 </template>
@@ -29,18 +29,22 @@ import type {
   JsonFormsRendererRegistryEntry,
   UISchemaElement,
 } from '@jsonforms/core';
-import {  DispatchRenderer,  rendererProps, useJsonFormsControlWithDetail,} from '@jsonforms/vue';
-import type {RendererProps} from '@jsonforms/vue';
+import {
+  DispatchRenderer,
+  rendererProps,
+  useJsonFormsControlWithDetail,
+} from '@jsonforms/vue';
+import type { RendererProps } from '@jsonforms/vue';
 import cloneDeep from 'lodash/cloneDeep';
 import isEmpty from 'lodash/isEmpty';
 import isObject from 'lodash/isObject';
 import { defineComponent } from 'vue';
-import {useNested} from "./utils"
-import {useVanillaControl} from "@jsonforms/vue-vanilla";
+import { useNested } from './utils';
+import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import AdditionalProperties from './components/AdditionalProperties.vue';
 
 const controlRenderer = defineComponent({
-  name: 'object-renderer',
+  name: 'ObjectRenderer',
   components: {
     DispatchRenderer,
     AdditionalProperties,
@@ -60,17 +64,17 @@ const controlRenderer = defineComponent({
   computed: {
     hasAdditionalProperties(): boolean {
       return (
-          !isEmpty(this.control.schema.patternProperties) ||
-          isObject(this.control.schema.additionalProperties)
-          // do not support - additionalProperties === true - since then the type should be any and we won't know what kind of renderer we should use for new properties
+        !isEmpty(this.control.schema.patternProperties) ||
+        isObject(this.control.schema.additionalProperties)
+        // do not support - additionalProperties === true - since then the type should be any and we won't know what kind of renderer we should use for new properties
       );
     },
     showAdditionalProperties(): boolean {
       const showAdditionalProperties =
-          this.control.uischema.options?.showAdditionalProperties;
+        this.control.uischema.options?.showAdditionalProperties;
       return (
-          showAdditionalProperties === undefined ||
-          showAdditionalProperties === true
+        showAdditionalProperties === undefined ||
+        showAdditionalProperties === true
       );
     },
     detailUiSchema(): UISchemaElement {
@@ -84,13 +88,13 @@ const controlRenderer = defineComponent({
         return uiSchema;
       };
       let result = findUISchema(
-          this.control.uischemas,
-          this.control.schema,
-          this.control.uischema.scope,
-          this.control.path,
-          uiSchemaGenerator,
-          this.control.uischema,
-          this.control.rootSchema
+        this.control.uischemas,
+        this.control.schema,
+        this.control.uischema.scope,
+        this.control.path,
+        uiSchemaGenerator,
+        this.control.uischema,
+        this.control.rootSchema
       );
       if (this.nested.level > 0) {
         result = cloneDeep(result);
@@ -98,7 +102,7 @@ const controlRenderer = defineComponent({
           ...result.options,
           bare: true,
           alignLeft:
-              this.nested.level >= 4 || this.nested.parentElement === 'array',
+            this.nested.level >= 4 || this.nested.parentElement === 'array',
         };
       }
       return result;

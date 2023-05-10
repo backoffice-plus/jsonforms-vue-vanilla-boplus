@@ -1,71 +1,78 @@
 <template>
-
-  <div :class="styles.oneOf.root" v-if="control.visible">
-
+  <div v-if="control.visible" :class="styles.oneOf.root">
     <CombinatorProperties
-        :schema="control.schema"
-        combinatorKeyword="oneOf"
-        :path="control.path"
+      :schema="control.schema"
+      combinator-keyword="oneOf"
+      :path="control.path"
     />
 
     <ControlWrapper
-        v-bind="controlWrapper"
-        :styles="styles"
-        :isFocused="!!isFocused"
-        :appliedOptions="appliedOptions"
+      v-bind="controlWrapper"
+      :styles="styles"
+      :is-focused="!!isFocused"
+      :applied-options="appliedOptions"
     >
       <select
-          :id="control.id + '-input'"
-          :class="styles.oneOf.select"
-          :disabled="!control.enabled"
-          :autofocus="appliedOptions.focus"
-          :required="control.required"
-          v-model="selectIndex"
+        :id="control.id + '-input'"
+        v-model="selectIndex"
+        :class="styles.oneOf.select"
+        :disabled="!control.enabled"
+        :autofocus="appliedOptions.focus"
+        :required="control.required"
       >
         <option
-            v-for="(item, index) in indexedOneOfRenderInfos"
-            v-text="item.label"
-            :value="index"
+          v-for="(item, index) in indexedOneOfRenderInfos"
+          :value="index"
+          v-text="item.label"
         />
       </select>
 
       <dispatch-renderer
-          v-if="indexedOneOfRenderInfos && indexedOneOfRenderInfos[confirmedIndex]"
-          :schema="indexedOneOfRenderInfos[confirmedIndex].schema"
-          :uischema="indexedOneOfRenderInfos[confirmedIndex].uischema"
-          :path="control.path"
-          :renderers="control.renderers"
-          :cells="control.cells"
-          :enabled="control.enabled"
+        v-if="
+          indexedOneOfRenderInfos && indexedOneOfRenderInfos[confirmedIndex]
+        "
+        :schema="indexedOneOfRenderInfos[confirmedIndex].schema"
+        :uischema="indexedOneOfRenderInfos[confirmedIndex].uischema"
+        :path="control.path"
+        :renderers="control.renderers"
+        :cells="control.cells"
+        :enabled="control.enabled"
       />
     </ControlWrapper>
-
   </div>
-
 </template>
 
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
-import isEmpty from 'lodash/isEmpty';
+import { defineComponent, ref } from 'vue';
 
-import CombinatorProperties from "./components/CombinatorProperties.vue";
-import {useBoPlusVanillaControl} from "./utils";
+import CombinatorProperties from './components/CombinatorProperties.vue';
+import { useBoPlusVanillaControl } from './utils';
 
-import type {ControlElement} from '@jsonforms/core';
-import {createCombinatorRenderInfos,  createDefaultValue,  isOneOfControl,  rankWith} from '@jsonforms/core';
-import type {CombinatorSubSchemaRenderInfo,  JsonFormsRendererRegistryEntry} from '@jsonforms/core';
-import {ControlWrapper, useVanillaControl} from "@jsonforms/vue-vanilla";
-import {DispatchRenderer, rendererProps, useJsonFormsOneOfControl,} from '@jsonforms/vue';
-import type {RendererProps,} from '@jsonforms/vue';
-
+import type {
+  ControlElement,
+  CombinatorSubSchemaRenderInfo,
+} from '@jsonforms/core';
+import {
+  createCombinatorRenderInfos,
+  createDefaultValue,
+  isOneOfControl,
+  rankWith,
+} from '@jsonforms/core';
+import { ControlWrapper } from '@jsonforms/vue-vanilla';
+import {
+  DispatchRenderer,
+  rendererProps,
+  useJsonFormsOneOfControl,
+} from '@jsonforms/vue';
+import type { RendererProps } from '@jsonforms/vue';
 
 /**
  * @see https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/complex/OneOfRenderer.vue
  */
 
 const renderer = defineComponent({
-  name: 'one-of-select-renderer',
+  name: 'OneOfSelectRenderer',
   components: {
     DispatchRenderer,
     ControlWrapper,
@@ -101,17 +108,48 @@ const renderer = defineComponent({
       index: number;
     })[] {
       const result = createCombinatorRenderInfos(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          this.control.schema.oneOf!,
-          this.control.rootSchema,
-          'oneOf',
-          this.control.uischema,
-          this.control.path,
-          this.control.uischemas
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.control.schema.oneOf!,
+        this.control.rootSchema,
+        'oneOf',
+        this.control.uischema,
+        this.control.path,
+        this.control.uischemas
       );
       return result
-          .filter((info) => info.uischema)
-          .map((info, index) => ({...info, index: index}));
+        .filter((info) => info.uischema)
+        .map((info, index) => ({ ...info, index: index }));
+    },
+  },
+
+  watch: {
+    selectIndex(newIndex, oldIndex) {
+      if (this.control.enabled && this.confirmedIndex !== newIndex) {
+        let confirmAlert = true;
+
+        //:TODO read the current data (they are not in this.control.data!!!)
+        const hasData = false; //!isEmpty(this.control.data);
+        if (hasData) {
+          confirmAlert = confirm(
+            'Your data will be cleared if you select this new option. Do you want to proceed?'
+          );
+        }
+
+        if (confirmAlert) {
+          this.confirmedIndex = newIndex;
+        } else {
+          this.selectIndex = oldIndex;
+        }
+      }
+    },
+
+    confirmedIndex(newIndex /*, oldIndex*/) {
+      /** @ts-ignore */
+      const schema = this.indexedOneOfRenderInfos[newIndex]?.schema;
+      this.handleChange(
+        this.control.path,
+        (schema && createDefaultValue(schema)) ?? {}
+      );
     },
   },
   methods: {
@@ -155,33 +193,6 @@ const renderer = defineComponent({
     //   this.selectedIndex = this.newSelectedIndex;
     // },
   },
-
-
-  watch: {
-    selectIndex(newIndex, oldIndex) {
-        if (this.control.enabled && this.confirmedIndex !== newIndex) {
-          let confirmAlert = true;
-
-          //:TODO read the current data (they are not in this.control.data!!!)
-          const hasData = false;//!isEmpty(this.control.data);
-          if (hasData) {
-            confirmAlert = confirm("Your data will be cleared if you select this new option. Do you want to proceed?");
-          }
-
-          if (confirmAlert) {
-            this.confirmedIndex = newIndex;
-          } else {
-            this.selectIndex = oldIndex;
-          }
-        }
-    },
-
-    confirmedIndex(newIndex, oldIndex) {
-        /** @ts-ignore */
-        const schema = this.indexedOneOfRenderInfos[newIndex]?.schema;
-        this.handleChange(this.control.path, (schema && createDefaultValue(schema)) ?? {})
-    }
-  }
   // watch(selectIndex, (newIndex, oldIndex) => {
   //   if (input.control.value.enabled && confirmedIndex.value !== newIndex) {
   //     let confirmAlert = true;
@@ -205,8 +216,6 @@ const renderer = defineComponent({
   //   const schema = indexedOneOfRenderInfos.value[newIndex]?.schema;
   //   input.handleChange(input.control.value.path, (schema && createDefaultValue(schema)) ?? {})
   // });
-
-
 });
 
 export default renderer;
@@ -216,6 +225,4 @@ export const entry = {
   //rank is 3, but must be lower than in EnumOneOfControlRenderer
   tester: rankWith(1, isOneOfControl),
 };
-
-
 </script>

@@ -1,9 +1,9 @@
 <template>
   <div v-if="isLayoutWithElements">
     <dispatch-renderer
-        :schema="otherProps"
-        :path="path"
-        :uischema="foundUISchema"
+      :schema="otherProps"
+      :path="path"
+      :uischema="foundUISchema"
     />
   </div>
 </template>
@@ -21,7 +21,7 @@ interface CombinatorProps {
   path: string;
 }
 export default defineComponent({
-  name: 'combinator-properties',
+  name: 'CombinatorProperties',
   components: {
     DispatchRenderer,
   },
@@ -41,15 +41,15 @@ export default defineComponent({
   },
   setup(props: CombinatorProps) {
     const otherProps: JsonSchema = omit(
-        props.schema,
-        props.combinatorKeyword
+      props.schema,
+      props.combinatorKeyword
     ) as JsonSchema;
     const foundUISchema: UISchemaElement = Generate.uiSchema(
-        otherProps,
-        'VerticalLayout'
+      otherProps,
+      'VerticalLayout'
     );
     const isLayout = (uischema: UISchemaElement): uischema is Layout =>
-        Object.prototype.hasOwnProperty.call(uischema, 'elements');
+      Object.prototype.hasOwnProperty.call(uischema, 'elements');
     let isLayoutWithElements = false;
     if (foundUISchema !== null && isLayout(foundUISchema)) {
       isLayoutWithElements = foundUISchema.elements.length > 0;

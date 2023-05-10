@@ -1,105 +1,101 @@
 <template>
   <div v-if="control.visible" :class="styles.arrayList.root">
-
     <div :class="styles.arrayList.itemToolbar">
+      <!--      <validation-icon-->
+      <!--          v-if="control.childErrors.length > 0"-->
+      <!--          :errors="control.childErrors"-->
+      <!--      />-->
 
-<!--      <validation-icon-->
-<!--          v-if="control.childErrors.length > 0"-->
-<!--          :errors="control.childErrors"-->
-<!--      />-->
-
-      <label class="flex-grow label" :class="styles.arrayList.label">{{ computedLabel }}</label>
+      <label class="flex-grow label" :class="styles.arrayList.label">{{
+        computedLabel
+      }}</label>
 
       <button
-          :class="styles.arrayList.addButton"
-          :disabled="
-                  !control.enabled ||
-                  (appliedOptions.restrict && arraySchema.maxItems !== undefined && dataLength >= arraySchema.maxItems)
-                "
-          @click="addButtonClick"
+        :class="styles.arrayList.addButton"
+        :disabled="
+          !control.enabled ||
+          (appliedOptions.restrict &&
+            arraySchema.maxItems !== undefined &&
+            dataLength >= arraySchema.maxItems)
+        "
+        @click="addButtonClick"
       >
         +
-<!--        {{ `Add to ${control.label}` }}-->
+        <!--        {{ `Add to ${control.label}` }}-->
       </button>
     </div>
 
-    <table :class="{withSortButtons:appliedOptions.showSortButtons}">
+    <table :class="{ withSortButtons: appliedOptions.showSortButtons }">
       <thead v-if="control.schema.type === 'object'">
-      <tr>
-        <th
+        <tr>
+          <th
             v-for="(prop, index) in getValidColumnProps(control.schema)"
             :key="`${control.path}-header-${index}`"
             scope="col"
-        >
-          {{ title(prop) }}
-        </th>
-        <th
-            v-if="control.enabled"
-            scope="col"
-        />
-      </tr>
+          >
+            {{ title(prop) }}
+          </th>
+          <th v-if="control.enabled" scope="col" />
+        </tr>
       </thead>
 
       <tbody>
-      <tr
+        <tr
           v-for="(element, index) in control.data"
           :key="`${control.path}-${index}`"
           :class="styles.arrayList.item"
-      >
-        <td
-            v-for="propName in getValidColumnProps(control.schema)"
-            :key="composePaths(composePaths(control.path, `${index}`), propName)"
         >
-          <dispatch-renderer
+          <td
+            v-for="propName in getValidColumnProps(control.schema)"
+            :key="
+              composePaths(composePaths(control.path, `${index}`), propName)
+            "
+          >
+            <dispatch-renderer
               :schema="control.schema"
               :uischema="resolveUiSchema(propName)"
               :path="composePaths(control.path, `${index}`)"
               :enabled="control.enabled"
               :renderers="control.renderers"
               :cells="control.cells"
-          />
-        </td>
+            />
+          </td>
 
-        <td v-if="control.enabled">
-          <button
+          <td v-if="control.enabled">
+            <button
+              v-if="appliedOptions.showSortButtons"
               :class="styles.arrayList.itemMoveUp"
               :disabled="index <= 0 || !control.enabled"
               @click="moveUpClick($event, index)"
               v-text="'up'"
+            />
+            <button
               v-if="appliedOptions.showSortButtons"
-          />
-          <button
               :class="styles.arrayList.itemMoveUp"
               :disabled="index >= dataLength - 1 || !control.enabled"
               @click="moveDownClick($event, index)"
               v-text="'down'"
-              v-if="appliedOptions.showSortButtons"
-          />
-          <button
+            />
+            <button
               :class="styles.arrayList.itemDelete"
-              :disabled="!control.enabled || (appliedOptions.restrict &&  arraySchema.minItems !== undefined && dataLength <= arraySchema.minItems)                    "
+              :disabled="
+                !control.enabled ||
+                (appliedOptions.restrict &&
+                  arraySchema.minItems !== undefined &&
+                  dataLength <= arraySchema.minItems)
+              "
               @click="removeItemsClick($event, [index])"
-          />
-        </td>
-
-      </tr>
+            />
+          </td>
+        </tr>
       </tbody>
-
     </table>
 
-    <div v-if="!dataLength" :class="styles.arrayList.noData">
-      No data
+    <div v-if="!dataLength" :class="styles.arrayList.noData">No data</div>
+
+    <div v-if="control.childErrors.length > 0" :class="styles.control.error">
+      <span v-text="control.childErrors.length + ' Errors'" />
     </div>
-
-    <div :class="styles.control.error"
-         v-if="control.childErrors.length > 0">
-        <span
-            v-text="control.childErrors.length +' Errors'"
-        />
-    </div>
-
-
-
   </div>
 </template>
 
@@ -128,12 +124,9 @@ import {
   useJsonFormsArrayControl,
 } from '@jsonforms/vue';
 
-import type {
-  RendererProps,
-} from '@jsonforms/vue';
+import type { RendererProps } from '@jsonforms/vue';
 
 import { useBoPlusArrayControl } from './utils';
-
 
 /**
  * @see https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/complex/ArrayControlRenderer.vue
@@ -141,7 +134,7 @@ import { useBoPlusArrayControl } from './utils';
 
 //import { ValidationIcon, ValidationBadge } from '../controls/components/index';
 const controlRenderer = defineComponent({
-  name: 'array-control-renderer',
+  name: 'ArrayControlRenderer',
   components: {
     DispatchCell,
     DispatchRenderer,
@@ -155,9 +148,9 @@ const controlRenderer = defineComponent({
   computed: {
     arraySchema(): JsonSchema | undefined {
       return Resolve.schema(
-          this.control.rootSchema,
-          this.control.uischema.scope,
-          this.control.rootSchema
+        this.control.rootSchema,
+        this.control.uischema.scope,
+        this.control.rootSchema
       );
     },
     dataLength(): number {
@@ -169,8 +162,8 @@ const controlRenderer = defineComponent({
     createDefaultValue,
     addButtonClick() {
       this.addItem(
-          this.control.path,
-          createDefaultValue(this.control.schema)
+        this.control.path,
+        createDefaultValue(this.control.schema)
       )();
     },
     moveUpClick(event: Event, toMove: number): void {
@@ -187,11 +180,11 @@ const controlRenderer = defineComponent({
     },
     getValidColumnProps(scopedSchema: JsonSchema) {
       if (
-          scopedSchema.type === 'object' &&
-          typeof scopedSchema.properties === 'object'
+        scopedSchema.type === 'object' &&
+        typeof scopedSchema.properties === 'object'
       ) {
         return Object.keys(scopedSchema.properties).filter(
-            (prop) => scopedSchema.properties![prop].type !== 'array'
+          (prop) => scopedSchema.properties![prop].type !== 'array'
         );
       }
       // primitives
@@ -202,8 +195,8 @@ const controlRenderer = defineComponent({
     },
     resolveUiSchema(propName: string) {
       return this.control.schema.properties
-          ? this.controlWithoutLabel(`#/properties/${propName}`)
-          : this.controlWithoutLabel('#');
+        ? this.controlWithoutLabel(`#/properties/${propName}`)
+        : this.controlWithoutLabel('#');
     },
     controlWithoutLabel(scope: string): ControlElement {
       return { type: 'Control', scope: scope, label: false };

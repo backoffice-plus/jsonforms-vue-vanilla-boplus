@@ -1,70 +1,70 @@
 <template>
-
   <div v-if="control.visible">
-
     <!-- CombinatorProperties -->
     <CombinatorProperties
-        :schema="control.schema"
-        combinatorKeyword="anyOf"
-        :path="path"
+      :schema="control.schema"
+      combinator-keyword="anyOf"
+      :path="path"
     />
 
     <!--  :class="styles.anyOf.root" -->
     <div class="categorization">
-
       <!--  :class="styles.anyOf.category" -->
       <div class="tabs">
-
         <div
-            v-for="(anyOfRenderInfo, anyOfIndex) in anyOfRenderInfos"
-            :key="`${control.path}-${anyOfIndex}`"
-            @click="selectedIndex=anyOfIndex"
+          v-for="(anyOfRenderInfo, anyOfIndex) in anyOfRenderInfos"
+          :key="`${control.path}-${anyOfIndex}`"
+          @click="selectedIndex = anyOfIndex"
         >
           <!--  :class="styles.categorization.selected" -->
-          <button :class="{selected:selectedIndex===anyOfIndex}">{{ anyOfRenderInfo.label }}</button>
-
+          <button :class="{ selected: selectedIndex === anyOfIndex }">
+            {{ anyOfRenderInfo.label }}
+          </button>
         </div>
-
       </div>
 
       <!--  :class="styles.anyOf.panel" -->
       <div class="panel">
-
-        <template
-            v-for="(anyOfRenderInfo, anyOfIndex) in anyOfRenderInfos"
-        >
-
+        <template v-for="(anyOfRenderInfo, anyOfIndex) in anyOfRenderInfos">
           <dispatch-renderer
-              v-if="selectedIndex === anyOfIndex"
-              :schema="anyOfRenderInfo.schema"
-              :uischema="anyOfRenderInfo.uischema"
-              :path="control.path"
-              :renderers="control.renderers"
-              :cells="control.cells"
-              :enabled="control.enabled"
-              :key="`${control.path}-${anyOfIndex}`"
+            v-if="selectedIndex === anyOfIndex"
+            :key="`${control.path}-${anyOfIndex}`"
+            :schema="anyOfRenderInfo.schema"
+            :uischema="anyOfRenderInfo.uischema"
+            :path="control.path"
+            :renderers="control.renderers"
+            :cells="control.cells"
+            :enabled="control.enabled"
           />
-
         </template>
-
       </div>
-
     </div>
   </div>
-
 </template>
 
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
-import {createCombinatorRenderInfos, isAnyOfControl, rankWith} from '@jsonforms/core';
-import type {CombinatorSubSchemaRenderInfo, ControlElement, JsonFormsRendererRegistryEntry} from '@jsonforms/core';
-import {DispatchRenderer, rendererProps, useJsonFormsAnyOfControl,} from '@jsonforms/vue';
-import type {RendererProps} from '@jsonforms/vue';
-import {useVanillaControl} from "@jsonforms/vue-vanilla";
-import CombinatorProperties from "./components/CombinatorProperties.vue";
+import { defineComponent, ref } from 'vue';
+import {
+  createCombinatorRenderInfos,
+  isAnyOfControl,
+  rankWith,
+} from '@jsonforms/core';
+import type {
+  CombinatorSubSchemaRenderInfo,
+  ControlElement,
+  JsonFormsRendererRegistryEntry,
+} from '@jsonforms/core';
+import {
+  DispatchRenderer,
+  rendererProps,
+  useJsonFormsAnyOfControl,
+} from '@jsonforms/vue';
+import type { RendererProps } from '@jsonforms/vue';
+import { useVanillaControl } from '@jsonforms/vue-vanilla';
+import CombinatorProperties from './components/CombinatorProperties.vue';
 
 const controlRenderer = defineComponent({
-  name: 'any-of-renderer',
+  name: 'AnyOfRenderer',
   components: {
     DispatchRenderer,
     CombinatorProperties,
@@ -84,13 +84,13 @@ const controlRenderer = defineComponent({
   computed: {
     anyOfRenderInfos(): CombinatorSubSchemaRenderInfo[] {
       const result = createCombinatorRenderInfos(
-          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          this.control.schema.anyOf!,
-          this.control.rootSchema,
-          'anyOf',
-          this.control.uischema,
-          this.control.path,
-          this.control.uischemas
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        this.control.schema.anyOf!,
+        this.control.rootSchema,
+        'anyOf',
+        this.control.uischema,
+        this.control.path,
+        this.control.uischemas
       );
       return result.filter((info) => info.uischema);
     },

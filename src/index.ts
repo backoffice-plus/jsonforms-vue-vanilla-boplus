@@ -64,5 +64,5 @@
 // });
 //
 //
-import boplusVueVanillaRenderers from './vue3'
+import boplusVueVanillaRenderers from './vue3';
 export default boplusVueVanillaRenderers;

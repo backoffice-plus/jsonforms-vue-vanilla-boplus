@@ -1,4 +1,4 @@
 export interface NestedInfo {
-    level: number;
-    parentElement?: 'array' | 'object';
+  level: number;
+  parentElement?: 'array' | 'object';
 }

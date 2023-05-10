@@ -1,22 +1,22 @@
 <template>
-
   <control-wrapper
-      v-bind="controlWrapper"
-      :styles="styles"
-      :isFocused="!!isFocused"
-      :appliedOptions="appliedOptions"
-      :id="control.id + '-input'"
+    v-bind="controlWrapper"
+    :id="control.id + '-input'"
+    :styles="styles"
+    :is-focused="!!isFocused"
+    :applied-options="appliedOptions"
   >
-    <input :type="passwordVisible ? 'text' : 'password'"
-           data-type="password"
-           v-model="control.data"
-           :id="control.id + '-input'"
-           :class="styles.control.input"
-           :disabled="!control.enabled"
-           :autofocus="appliedOptions.focus"
-           :placeholder="appliedOptions.placeholder"
-           :required="control.required"
-           @change="onChange"
+    <input
+      :id="control.id + '-input'"
+      v-model="control.data"
+      :type="passwordVisible ? 'text' : 'password'"
+      data-type="password"
+      :class="styles.control.input"
+      :disabled="!control.enabled"
+      :autofocus="appliedOptions.focus"
+      :placeholder="appliedOptions.placeholder"
+      :required="control.required"
+      @change="onChange"
     />
 
     <!--
@@ -24,46 +24,54 @@
       :size="(input.appliedOptions.trim && control.schema.maxLength !== undefined )?? control.schema.maxLength"
     -->
 
-    <button @click="passwordVisible=!passwordVisible"></button>
-
+    <button @click="passwordVisible = !passwordVisible"></button>
   </control-wrapper>
 </template>
 
-<script>
-import {defineComponent} from "vue";
-import {rendererProps, useJsonFormsControl} from '@jsonforms/vue';
-import {ControlWrapper, useVanillaControl} from "@jsonforms/vue-vanilla";
-import {formatIs, isStringControl, rankWith, and} from "@jsonforms/core";
-
+<script lang="ts">
+import { defineComponent } from 'vue';
+import {
+  RendererProps,
+  rendererProps,
+  useJsonFormsControl,
+} from '@jsonforms/vue';
+import { ControlWrapper, useVanillaControl } from '@jsonforms/vue-vanilla';
+import {
+  formatIs,
+  isStringControl,
+  rankWith,
+  and,
+  JsonFormsRendererRegistryEntry,
+  ControlElement,
+} from '@jsonforms/core';
 
 /**
  * https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/controls/PasswordControlRenderer.vue
  */
 const renderer = defineComponent({
   components: {
-    ControlWrapper
+    ControlWrapper,
   },
   props: {
-    ...rendererProps()
+    ...rendererProps<ControlElement>(),
+  },
+  setup(props: RendererProps<ControlElement>) {
+    return useVanillaControl(
+      useJsonFormsControl(props),
+      (target) => target.value || undefined
+    );
   },
   data() {
     return {
       passwordVisible: false,
-    }
+    };
   },
-  setup(props) {
-    return useVanillaControl(useJsonFormsControl(props), target => target.value || undefined);
-
-  },
-  computed: {
-
-  }
+  computed: {},
 });
 
 export default renderer;
-export const entry = {
+export const entry: JsonFormsRendererRegistryEntry = {
   renderer: renderer,
-  tester: rankWith(2, and(isStringControl, formatIs('password')))
+  tester: rankWith(2, and(isStringControl, formatIs('password'))),
 };
-
 </script>
