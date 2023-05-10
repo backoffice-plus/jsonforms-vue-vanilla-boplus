@@ -9,6 +9,7 @@ import  {entry as enumArrayEntry} from "./EnumArrayRenderer.vue";
 import  {entry as sliderEntry} from "./SliderControlRenderer.vue";
 import  {entry as toogleEntry} from "./BooleanToggleControlRenderer.vue";
 import  {entry as categorizationEntry} from "./CategorizationRenderer.vue";
+import  {entry as constEntry} from "./ConstRenderer.vue";
 
 export default [
   passwordEntry,
@@ -22,4 +23,5 @@ export default [
   sliderEntry,
   toogleEntry,
   categorizationEntry,
+  constEntry,
 ];
