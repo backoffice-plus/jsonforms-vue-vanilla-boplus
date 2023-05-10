@@ -8,7 +8,7 @@
   >
 
     <input type="range"
-           v-model="current"
+           :value="control.data"
            :step="control.schema.multipleOf || 1"
            :min="control.schema.minimum"
            :max="control.schema.maximum"
@@ -23,7 +23,7 @@
            @blur="isFocused = false"
     />
 
-    <span>{{ current }}</span>
+    <span>{{ control.data }}</span>
 
   </control-wrapper>
 
@@ -62,15 +62,15 @@ const controlRenderer = defineComponent({
       ...control,
     }
   },
-  mounted() {
-    if(undefined !== this.control.data) {
-      this.current = this.control.data
-    }
-    else {
-      this.current = this.control.schema.default;
-      this.onChange({target:{value:this.control.schema.default}});//:INFO default value should always be set
-    }
-  },
+  // mounted() {
+  //   if(undefined !== this.control.data) {
+  //     this.current = this.control.data
+  //   }
+  //   else {
+  //     this.current = this.control.schema.default;
+  //     this.onChange({target:{value:this.control.schema.default}});//:INFO default value should always be set
+  //   }
+  // },
 });
 export default controlRenderer;
 export const entry: JsonFormsRendererRegistryEntry = {

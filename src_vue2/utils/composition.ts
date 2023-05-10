@@ -1,7 +1,10 @@
 import _ from "lodash";
-import {defaultStyles} from '../../utils';
-export * from '../../utils/composition';
-import {useComputedLabel, useControlAppliedOptions, childLabelForIndex as childLabelForIndexWithInput} from '../../utils/composition';
+// @ts-ignore
+import {defaultStyles} from '../../src/utils';
+// @ts-ignore
+export * from '../../src/utils/composition';
+import {useComputedLabel, useControlAppliedOptions, childLabelForIndex as childLabelForIndexWithInput} from '../../src/utils/composition';
+// @ts-ignore
 import {useStyles, useVanillaControl, useVanillaLayout} from "@jsonforms/vue2-vanilla";
 
 export const useBoPlusLayout = <I extends { layout: any }>(input: I) => {
