@@ -6,7 +6,7 @@
       <!--          :errors="control.childErrors"-->
       <!--      />-->
 
-      <label class="flex-grow label" :class="styles.arrayList.label">{{
+      <label class="label" :class="styles.arrayList.label">{{
         computedLabel
       }}</label>
 

@@ -5,7 +5,7 @@
     :is-focused="!!isFocused"
     :applied-options="appliedOptions"
   >
-    <div class="flex">
+    <div style="display:flex">
       <input
         :id="control.id + `-input`"
         type="checkbox"

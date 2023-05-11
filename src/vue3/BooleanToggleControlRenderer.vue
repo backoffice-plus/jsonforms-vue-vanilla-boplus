@@ -80,71 +80,78 @@ export const entry: JsonFormsRendererRegistryEntry = {
     --bop-booleanToogle-background-active: #0284c7;
 }
 </style>
-
 <style scoped>
 .toggle {
-  aspect-ratio: 16/9;
-  height: var(--slider-height);
-  @apply relative
-    inline-block;
+    aspect-ratio: 16/9;
+    height: var(--slider-height);
+    position: relative;
+    display: inline-block;
 }
 
 .toggle input {
-  @apply w-0 h-0 invisible;
+    visibility: hidden;
+    width: 0;
+    height: 0;
 }
 
 .toggle .slider {
-  @apply absolute inset-0
-    cursor-pointer
-    rounded-full;
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    border-radius: 9999px;
 }
 
 .toggle .slider:before {
-  content: '';
-  left: var(--slider-margin);
-  top: var(--slider-margin);
-  bottom: var(--slider-margin);
+    content: "";
+    left: var(--slider-margin);
+    top: var(--slider-margin);
+    bottom: var(--slider-margin);
 
-  @apply absolute
-    aspect-square
-    rounded-full;
+    position: absolute;
+    border-radius: 9999px;
+    aspect-ratio: 1 / 1;
 }
 
-.toggle:has(input:disabled) {
-  @apply opacity-50;
+
+.toggle:has(input:disabled)  {
+    opacity: 0.5;
 }
-.toggle:has(input:disabled) .slider {
-  @apply cursor-default;
+.toggle:has(input:disabled) .slider  {
+    cursor: default;
 }
 
 /*
  * Colors
  */
 .toggle .slider {
-  background-color: var(--bop-booleanToogle-background);
+    background-color: var(--bop-booleanToogle-background);
 }
 
 .toggle .slider:before {
-  background-color: var(--bop-booleanToogle-slider);
+    background-color: var(--bop-booleanToogle-slider);
 }
 
 .toggle input:checked + .slider {
-  background-color: var(--bop-booleanToogle-background-active);
+    background-color: var(--bop-booleanToogle-background-active);
 }
+
 
 /*
  * transition
  */
 .toggle .slider {
-  @apply transition-colors duration-300;
+    transition-property: background-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
 }
 
 .toggle .slider:before {
-  @apply duration-300;
+    transition-duration: 300ms;
 }
 
 .toggle input:checked + .slider:before {
-  left: 100%;
-  transform: translateX(calc(-100% - var(--slider-margin)));
+    left: 100%;
+    transform: translateX(calc(-100% - var(--slider-margin)));
 }
+
 </style>
