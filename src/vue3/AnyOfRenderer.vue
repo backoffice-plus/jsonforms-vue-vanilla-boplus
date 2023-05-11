@@ -1,16 +1,13 @@
 <template>
   <div v-if="control.visible">
-    <!-- CombinatorProperties -->
     <CombinatorProperties
       :schema="control.schema"
       combinator-keyword="anyOf"
       :path="path"
     />
 
-    <!--  :class="styles.anyOf.root" -->
-    <div class="categorization">
-      <!--  :class="styles.anyOf.category" -->
-      <div class="tabs">
+  <div :class="styles.anyOf.root">
+      <div :class="styles.anyOf.category">
         <div
           v-for="(anyOfRenderInfo, anyOfIndex) in anyOfRenderInfos"
           :key="`${control.path}-${anyOfIndex}`"
@@ -23,8 +20,7 @@
         </div>
       </div>
 
-      <!--  :class="styles.anyOf.panel" -->
-      <div class="panel">
+      <div :class="styles.anyOf.panel">
         <template v-for="(anyOfRenderInfo, anyOfIndex) in anyOfRenderInfos">
           <dispatch-renderer
             v-if="selectedIndex === anyOfIndex"
@@ -60,8 +56,8 @@ import {
   useJsonFormsAnyOfControl,
 } from '@jsonforms/vue';
 import type { RendererProps } from '@jsonforms/vue';
-import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import CombinatorProperties from './components/CombinatorProperties.vue';
+import {useBoPlusVanillaControl} from "./utils";
 
 const controlRenderer = defineComponent({
   name: 'AnyOfRenderer',
@@ -77,7 +73,7 @@ const controlRenderer = defineComponent({
     const control = (input.control as any).value as typeof input.control;
     const selectedIndex = ref(control.indexOfFittingSchema || 0);
     return {
-      ...useVanillaControl(input),
+      ...useBoPlusVanillaControl(input),
       selectedIndex,
     };
   },

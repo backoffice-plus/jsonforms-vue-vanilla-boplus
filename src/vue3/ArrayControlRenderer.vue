@@ -6,7 +6,7 @@
       <!--          :errors="control.childErrors"-->
       <!--      />-->
 
-      <label class="label" :class="styles.arrayList.label">{{
+      <label :class="styles.arrayList.label">{{
         computedLabel
       }}</label>
 

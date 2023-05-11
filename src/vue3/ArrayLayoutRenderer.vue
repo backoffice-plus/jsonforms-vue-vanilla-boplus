@@ -38,8 +38,9 @@
     </div>
 
     <div v-if="dataLength > 0" :class="styles.arrayList.itemContent">
-      <fieldset class="group">
-        <legend class="group-label">
+      <!-- :TODO create own styleClass to allow to use other than fieldset -->
+      <fieldset :class="styles.group.root">
+        <legend :class="styles.group.label">
           {{ childLabelForIndex(currentlyExpanded) }}
         </legend>
 

@@ -5,7 +5,7 @@
     :is-focused="isFocused"
     :applied-options="appliedOptions"
   >
-    <label class="toggle" :for="control.id + '-input'">
+    <label :class="styles.toggle.root" :for="control.id + '-input'">
       <input
         :id="control.id + '-input'"
         type="checkbox"
@@ -28,7 +28,7 @@
         :false-value="false"
         -->
 
-      <span class="slider" />
+        <span :class="styles.toggle.slider" />
     </label>
   </control-wrapper>
 </template>

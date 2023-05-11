@@ -1,6 +1,5 @@
 <template>
-  <!--  :class="styles.allOf.root" -->
-  <div v-if="control.visible" class="allOf">
+  <div v-if="control.visible" :class="styles.allOf.root">
     <template v-if="delegateUISchema">
       <dispatch-renderer
         :schema="control.schema"
@@ -54,8 +53,8 @@ import {
   useJsonFormsAllOfControl,
 } from '@jsonforms/vue';
 import type { RendererProps } from '@jsonforms/vue';
-import { useVanillaControl } from '@jsonforms/vue-vanilla';
 import CombinatorProperties from './components/CombinatorProperties.vue';
+import {useBoPlusVanillaControl} from "./utils";
 
 const controlRenderer = defineComponent({
   name: 'AllOfRenderer',
@@ -67,7 +66,7 @@ const controlRenderer = defineComponent({
     ...rendererProps<ControlElement>(),
   },
   setup(props: RendererProps<ControlElement>) {
-    return useVanillaControl(useJsonFormsAllOfControl(props));
+    return useBoPlusVanillaControl(useJsonFormsAllOfControl(props));
   },
   computed: {
     delegateUISchema(): UISchemaElement {

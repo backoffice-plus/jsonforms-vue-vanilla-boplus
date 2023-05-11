@@ -5,9 +5,18 @@ export const defaultStyles: BopStyles = {
     selected: 'selected',
     panel: 'panel',
   },
+  allOf: {
+    root: 'allof',
+  },
   oneOf: {
     root: 'oneof',
     select: 'oneof-select',
+  },
+  anyOf: {
+    root: 'categorization',
+    category: 'tabs',
+    selected: 'selected',
+    panel: 'panel',
   },
   objectAddProps: {
     root: 'object-addprops-root',
@@ -17,6 +26,10 @@ export const defaultStyles: BopStyles = {
   enumArray: {
     root: 'enum-array',
     item: 'enum-array-item',
+  },
+  toggle: {
+    root: 'toggle',
+    slider: 'slider',
   },
 };
 
@@ -31,6 +44,15 @@ export interface BopStyles {
     root?: string;
     select?: string;
   };
+  allOf: {
+    root?: string;
+  };
+  anyOf: {
+    root?: string;
+    category?: string;
+    selected?: string;
+    panel?: string;
+  };
   objectAddProps: {
     root?: string;
     toolbar?: string;
@@ -40,5 +62,9 @@ export interface BopStyles {
     root?: string;
     item?: string;
     label?: string;
+  };
+  toggle: {
+    root?: string;
+    slider?: string;
   };
 }
