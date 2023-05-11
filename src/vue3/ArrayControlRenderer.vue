@@ -209,27 +209,3 @@ export const entry: JsonFormsRendererRegistryEntry = {
   tester: rankWith(3, or(isObjectArrayControl, isPrimitiveArrayControl)),
 };
 </script>
-
-<style scoped>
-.fixed-cell {
-  width: 150px;
-  height: 50px;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  text-align: center;
-}
-.fixed-cell-small {
-  width: 50px;
-  height: 50px;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-  text-align: center;
-}
-.array-container tbody tr td {
-  border-bottom: none !important;
-}
-.array-container tbody tr td .container {
-  padding: 0;
-  margin: 0;
-}
-</style>

@@ -311,12 +311,3 @@ export const entry: JsonFormsRendererRegistryEntry = {
   tester: rankWith(4, isObjectArrayWithNesting),
 };
 </script>
-
-<style scoped>
-.notranslate {
-  transform: none !important;
-}
-/deep/ .v-toolbar__content {
-  padding-left: 0;
-}
-</style>
