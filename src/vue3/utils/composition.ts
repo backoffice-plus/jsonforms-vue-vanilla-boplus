@@ -33,9 +33,14 @@ export const useBoPlusVanillaControl = <
 ) => {
   const control = useVanillaControl(input, adaptTarget);
 
+  const appliedOptions = useControlAppliedOptions(input);
+
+  const computedLabel = useComputedLabel(input, appliedOptions);
+
   return {
     ...control,
     styles: _.merge(control.styles, defaultStyles),
+    computedLabel,
   };
 };
 

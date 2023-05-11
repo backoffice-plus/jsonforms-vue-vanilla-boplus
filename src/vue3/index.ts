@@ -10,6 +10,7 @@ import { entry as sliderEntry } from './SliderControlRenderer.vue';
 import { entry as toogleEntry } from './BooleanToggleControlRenderer.vue';
 import { entry as categorizationEntry } from './CategorizationRenderer.vue';
 import { entry as constEntry } from './ConstRenderer.vue';
+import { entry as radioGroupEntry } from './RadioGroupControlRenderer.vue';
 
 export default [
   passwordEntry,
@@ -24,4 +25,5 @@ export default [
   toogleEntry,
   categorizationEntry,
   constEntry,
+  radioGroupEntry,
 ];
