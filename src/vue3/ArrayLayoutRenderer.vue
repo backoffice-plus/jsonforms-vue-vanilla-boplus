@@ -79,13 +79,13 @@
 
 <script lang="ts">
 import {
-  rankWith,
-  isObjectArrayWithNesting,
-  composePaths,
-  createDefaultValue,
-  findUISchema,
-  Resolve,
-  getControlPath,
+    rankWith,
+    isObjectArrayWithNesting,
+    composePaths,
+    createDefaultValue,
+    findUISchema,
+    Resolve,
+    getControlPath, or, and, uiTypeIs, isObjectArray,
 } from '@jsonforms/core';
 import type {
   JsonFormsRendererRegistryEntry,
@@ -309,6 +309,10 @@ const controlRenderer = defineComponent({
 export default controlRenderer;
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(4, isObjectArrayWithNesting),
+  tester: rankWith(5,
+      or(
+          isObjectArrayWithNesting, //ArrayLayoutRenderer
+          and(uiTypeIs('ListWithDetail'), isObjectArray))//ListWithDetailRenderer
+      ),
 };
 </script>
