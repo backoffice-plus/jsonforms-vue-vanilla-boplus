@@ -12,6 +12,8 @@ import { entry as categorizationEntry } from './CategorizationRenderer.vue';
 import { entry as constEntry } from './ConstRenderer.vue';
 import { entry as radioGroupEntry } from './RadioGroupControlRenderer.vue';
 import { entry as autocompleteEntry } from './AutocompleteRenderer.vue';
+import { entry as dateTimeEntry } from './DateTimeRenderer.vue';
+import { entry as timeEntry } from './TimeRenderer.vue';
 
 export default [
   passwordEntry,
@@ -28,4 +30,6 @@ export default [
   constEntry,
   radioGroupEntry,
   autocompleteEntry,
+  dateTimeEntry,
+  timeEntry,
 ];

@@ -25,24 +25,26 @@ const jsonFormRenderers = Object.freeze([
 
 https://jsonforms.io/docs/renderer-sets
 
-| JSON Schema           | Renderer         | overruled Renderer | Vue Vanilla | Vue2 Vuetify | Bo+ Vue Vanilla |
-|-----------------------|------------------|:------------------:|:-----------:|:------------:|:---------------:|
-| boolean               | Toggle           |      Boolean       |      ❌      |      ✔️      |       ✔️        |
-| integer               | Slider           |      Integer       |      ❌      |      ✔️      |       ✔️        |
-| string                | Password         |       String       |      ❌      |      ✔️      |       ✔️        |
-| Enum                  | Autocomplete     |        Enum        |      ❌      |      ✔️      |       ✔️        |
-| Enum                  | RadioGroup       |        Enum        |      ❌      |      ✔️      |       ✔️        |
-| oneOf (const / title) | Autocomplete     |     EnumOneOf      |      ❌      |      ✔️      |       ✔️        |
-| oneOf (const / title) | RadioGroup       |     EnumOneOf      |      ❌      |      ✔️      |       ✔️        |
-| Object                | Vertical grid    |         -          |      ❌      |      ✔️      |       ✔️        |
-| Array of objects      | Table            |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
-| Array of objects      | List with Detail |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
-| Array of enums        | Multiple Choice  |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
-| oneOf                 | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
-| allOf                 | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
-| anyOf                 | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
-| Categorization        | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
-| const _type safety_   | Const            |        Enum        |      ❌      |      ❌       |       ✔️        |
-| :TODO                 |                  |                   |            |             |                 |
-| CategorizationStepper | Tabs             |   Categorization   |      ❌      |      ✔️      |        ❌        |
+| JSON Schema               | Renderer         | overruled Renderer | Vue Vanilla | Vue2 Vuetify | Bo+ Vue Vanilla |
+|---------------------------|------------------|:------------------:|:-----------:|:------------:|:---------------:|
+| boolean                   | Toggle           |      Boolean       |      ❌      |      ✔️      |       ✔️        |
+| integer                   | Slider           |      Integer       |      ❌      |      ✔️      |       ✔️        |
+| string                    | Password         |       String       |      ❌      |      ✔️      |       ✔️        |
+| Enum                      | Autocomplete     |        Enum        |      ❌      |      ✔️      |       ✔️        |
+| Enum                      | RadioGroup       |        Enum        |      ❌      |      ✔️      |       ✔️        |
+| oneOf (const / title)     | Autocomplete     |     EnumOneOf      |      ❌      |      ✔️      |       ✔️        |
+| oneOf (const / title)     | RadioGroup       |     EnumOneOf      |      ❌      |      ✔️      |       ✔️        |
+| Object                    | Vertical grid    |         -          |      ❌      |      ✔️      |       ✔️        |
+| Array of objects          | Table            |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
+| Array of objects          | List with Detail |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
+| Array of enums            | Multiple Choice  |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
+| oneOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
+| allOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
+| anyOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
+| Categorization            | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
+| const _type safety_       | Const            |        Enum        |      ⚠️      |      ❌       |       ✔️        |
+| string (format: time)     | Time             |       Time         |      ⚠️      |    ️ ✔️      |       ✔️        |
+| string (format: datetime) | DateTime         |      DateTime      |      ⚠️      |    ️ ✔️      |       ✔️        |
+| :TODO                     |                  |                    |            |              |                 |
+| CategorizationStepper     | Tabs             |   Categorization   |      ❌      |      ✔️      |        ❌        |
 
