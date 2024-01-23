@@ -83,13 +83,9 @@ const renderer = defineComponent({
   },
   setup(props: RendererProps<ControlElement>) {
     const input = useJsonFormsOneOfControl(props);
-    const control = (input.control as any).value as typeof input.control;
-    const selectedIndex = ref(control.indexOfFittingSchema);
-    //const selectIndex = ref(selectedIndex.value);
-    // const newSelectedIndex = ref(0);
-    // const dialog = ref(false);
-    //const t = useTranslator();
+    const control = input.control.value;
 
+    const selectedIndex = ref(control.indexOfFittingSchema);
     const confirmedIndex = ref(selectedIndex.value);
     const selectIndex = ref(confirmedIndex.value);
 
