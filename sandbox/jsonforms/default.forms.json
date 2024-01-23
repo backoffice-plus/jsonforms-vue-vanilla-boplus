@@ -1,0 +1,236 @@
+{
+  "schema": {
+    "type": "object",
+    "properties": {
+      "email": {
+        "type": "string",
+        "format": "email"
+      },
+      "password": {
+        "type": "string",
+        "format": "password"
+      },
+      "true": {
+        "const": true
+      },
+      "toggle": {
+        "type": "boolean"
+      },
+      "slider": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 100,
+        "default": 50
+      },
+      "colors": {
+        "type": "array",
+        "uniqueItems": true,
+        "items": {
+          "enum": [
+            "red",
+            "blue",
+            "green"
+          ],
+          "type": "string"
+        }
+      },
+      "number_select": {
+        "type": "string",
+        "enum": [
+          "one",
+          "two",
+          "three"
+        ]
+      },
+      "twelf": {
+        "const": 12
+      },
+      "textitems": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "bool": {
+              "type": "boolean"
+            },
+            "text": {
+              "type": "string"
+            },
+            "number": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "control30": {
+        "type": "string"
+      },
+      "control31": {
+        "type": "string",
+        "enum": [
+          ""
+        ]
+      },
+      "control32": {
+        "const": ""
+      },
+      "tab1boolean": {
+        "type": "boolean"
+      },
+      "tab2text": {
+        "type": "string"
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "age": {
+            "type": "string"
+          }
+        }
+      },
+      "objectAdditionalProps": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "uischema": {
+    "type": "VerticalLayout",
+    "elements": [
+
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "options": {
+              "toggle": true
+            },
+            "scope": "#/properties/toggle"
+          },
+          {
+            "type": "Control",
+            "scope": "#/properties/slider",
+            "options": {
+              "slider": true
+            }
+          },
+          {
+            "type": "Control",
+            "scope": "#/properties/password"
+          }
+        ],
+        "label": "Inputs"
+      },
+
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/user"
+          }
+        ],
+        "label": "Object Renderer"
+      },
+      {
+        "type": "Control",
+        "scope": "#/properties/objectAdditionalProps"
+      },
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/number_select",
+            "options": {
+              "format": "radio"
+            }
+          }
+        ],
+        "label": "Enum as Radio"
+      },
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/colors"
+          }
+        ],
+        "label": "Enum as Checkboxes"
+      },
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/true"
+          },
+          {
+            "type": "Control",
+            "scope": "#/properties/twelf"
+          }
+        ],
+        "label": "Const"
+      },
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/textitems"
+          }
+        ],
+        "label": "Array of Objects"
+      },
+
+
+
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Categorization",
+            "elements": [
+              {
+                "type": "Category",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/tab1boolean"
+                  }
+                ],
+                "label": "Tab A"
+              },
+              {
+                "type": "Category",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "options": {
+                      "multi": true
+                    },
+                    "scope": "#/properties/tab2text"
+                  }
+                ],
+                "label": "Tab B"
+              }
+            ]
+          }
+        ],
+        "label": "Tabs"
+      }
+    ]
+  }
+}
