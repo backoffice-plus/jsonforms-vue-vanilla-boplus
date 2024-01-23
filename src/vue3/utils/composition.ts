@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import merge from 'lodash/merge';
 import { defaultStyles } from '../../utils';
 export * from '../../utils/composition';
 import {
@@ -21,7 +21,7 @@ export const useBoPlusLayout = <I extends { layout: any }>(input: I) => {
 
   return {
     ...layout,
-    styles: _.merge(layout.styles, defaultStyles, uischemaStyles ?? {}),
+    styles: merge(layout.styles, defaultStyles, uischemaStyles ?? {}),
   };
 };
 
@@ -39,7 +39,7 @@ export const useBoPlusVanillaControl = <
 
   return {
     ...control,
-    styles: _.merge(control.styles, defaultStyles),
+    styles: merge(control.styles, defaultStyles),
     computedLabel,
   };
 };

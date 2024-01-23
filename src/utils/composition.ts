@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import merge from 'lodash/merge';
 import { computed, inject, provide } from 'vue';
 import type { ComputedRef } from 'vue';
 import {
@@ -13,7 +13,7 @@ export const useControlAppliedOptions = <I extends { control: any }>(
   input: I
 ) => {
   return computed(() =>
-    _.merge(
+    merge(
       {},
       JSON.parse(JSON.stringify(input.control.value.config)), //deepmerge
       JSON.parse(JSON.stringify(input.control.value.uischema?.options ?? [])) //deepmerge
