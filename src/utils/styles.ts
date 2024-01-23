@@ -31,6 +31,9 @@ export const defaultStyles: BopStyles = {
     root: 'toggle',
     slider: 'slider',
   },
+  controlWithTypes: {
+    root: 'control-with-types'
+  },
 };
 
 export interface BopStyles {
@@ -66,5 +69,8 @@ export interface BopStyles {
   toggle: {
     root?: string;
     slider?: string;
+  };
+  controlWithTypes: {
+    root?: string;
   };
 }
