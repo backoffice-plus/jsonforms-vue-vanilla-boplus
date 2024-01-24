@@ -1,9 +1,10 @@
 <template>
 
-  <section :class="styles.objectAddProps.items">
+  <div :class="[styles.verticalLayout.root, styles.objectAddProps.items]">
     <div
         v-for="(element, index) in additionalPropertyItems"
         :key="`${index}`"
+        :class="[styles.verticalLayout.item, styles.objectAddProps.item]"
     >
       <DispatchRenderer
           v-if="element.schema && element.uischema"
@@ -18,11 +19,12 @@
       <!--  :disabled="removePropertyDisabled" -->
       <button
           v-if="control.enabled"
+          :class="styles.objectAddProps.itemDeleteButton"
           @click="removeProperty(element.propertyName)"
           v-text="'x'"
       />
     </div>
-  </section>
+  </div>
 
 </template>
 

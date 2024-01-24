@@ -20,8 +20,12 @@ export const defaultStyles: BopStyles = {
   },
   objectAddProps: {
     root: 'object-addprops-root',
+    /** @deprecated **/
     toolbar: 'object-addprops-toolbar',
+    button: 'object-addprops-button',
     items: 'object-addprops-items',
+    item: 'object-addprops-item',
+    itemDeleteButton: 'object-addprops-item-delete-button',
   },
   enumArray: {
     root: 'enum-array',
@@ -58,8 +62,12 @@ export interface BopStyles {
   };
   objectAddProps: {
     root?: string;
+    /** @deprecated **/
     toolbar?: string;
+    button?: string;
     items?: string;
+    item?: string;
+    itemDeleteButton?: string;
   };
   enumArray: {
     root?: string;

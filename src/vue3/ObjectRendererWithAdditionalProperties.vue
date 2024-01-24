@@ -1,11 +1,11 @@
 <template>
 
-  <div v-if="control.visible">
+  <div v-if="control.visible" :class="styles.objectAddProps.root">
 
     <fieldset v-if="control.visible" :class="styles.group.root">
       <legend v-if="control.label" :class="styles.group.label">
         {{ control.label }}
-        <ButtonWithDialog :input="input"/>
+        <ButtonWithDialog :input="input" :class="styles.objectAddProps.button"/>
       </legend>
 
       <DispatchRenderer
@@ -33,7 +33,7 @@ import {and, findUISchema, isObjectControl, rankWith, schemaMatches} from '@json
 import type {ControlElement, JsonFormsRendererRegistryEntry, UISchemaElement,} from '@jsonforms/core';
 import {DispatchRenderer, type RendererProps, rendererProps, useJsonFormsControlWithDetail} from '@jsonforms/vue';
 import {useVanillaControl} from '@jsonforms/vue-vanilla';
-import {type AdditionalPropertyType, createAdditionProperties} from "./utils";
+import {type AdditionalPropertyType, createAdditionProperties, useStylesByUischema} from "./utils";
 import ItemList from "./components/AdditionalProperties/ItemList.vue";
 import ButtonWithDialog from "./components/AdditionalProperties/ButtonWithDialog.vue";
 
@@ -53,8 +53,11 @@ const controlRenderer = defineComponent({
     const additionalPropertyItems: Ref<AdditionalPropertyType[]> = ref(createAdditionProperties(control.control.value.schema, control.control.value?.data, control.control.value.path));
     provide("additionalPropertyItems", additionalPropertyItems)
 
+    const styles = useStylesByUischema(control.control.value.uischema);
+
     return {
       ...control,
+      styles,
       input: control,
     };
   },
