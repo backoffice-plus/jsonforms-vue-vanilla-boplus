@@ -6,6 +6,7 @@ import startCase from "lodash/startCase";
 import isPlainObject from "lodash/isPlainObject";
 import merge from "lodash/merge";
 import {type BopStyles, defaultStyles} from "../../utils";
+import {Styles} from "@jsonforms/vue-vanilla/src/styles/styles";
 
 export type AdditionalPropertyType = {
     propertyName: string
@@ -188,6 +189,7 @@ export const injectAdditionalPropertyItems = () => {
     return inject<Ref<AdditionalPropertyType[]> | undefined>("additionalPropertyItems", undefined) ?? (() => {throw "injection 'additionalPropertyItems' not found"})()
 }
 
-export const useStylesByUischema = (uischema:UISchemaElement):BopStyles => {
-    return merge(useStyles(uischema), defaultStyles) as BopStyles;
+export interface MergedStyles extends Styles, BopStyles {}
+export const useStylesByUischema = (uischema:UISchemaElement):MergedStyles => {
+    return merge(useStyles(uischema), defaultStyles) as MergedStyles;
 }
