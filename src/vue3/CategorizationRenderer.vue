@@ -21,14 +21,14 @@
           :class="[selected === index ? styles.categorization.selected : '']"
           :disabled="!item.isEnabled"
         >
-          <span v-if="isStepper">{{ index }}</span>
+          <span v-if="isStepper" class="badge">{{ index }}</span>
 
           <!--          {{ item.element.i18n ? item.element.i18n : item.element.label }}-->
-          <span>{{ item.element.label }}</span>
+          <label>{{ item.element.label }}</label>
         </button>
       </div>
 
-        <figure v-if="isStepper && index!==categories.length-1" />
+        <hr v-if="isStepper && index!==categories.length-1" />
 
       </template>
 
