@@ -42,9 +42,8 @@ https://jsonforms.io/docs/renderer-sets
 | allOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
 | anyOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
 | Categorization            | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
+| Categorization Stepper    | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
 | const _type safety_       | Const            |        Enum        |      ⚠️      |      ❌       |       ✔️        |
 | string (format: time)     | Time             |       Time         |      ⚠️      |    ️ ✔️      |       ✔️        |
 | string (format: datetime) | DateTime         |      DateTime      |      ⚠️      |    ️ ✔️      |       ✔️        |
-| :TODO                     |                  |                    |            |              |                 |
-| CategorizationStepper     | Tabs             |   Categorization   |      ❌      |      ✔️      |        ❌        |
 

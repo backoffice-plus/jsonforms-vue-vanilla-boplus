@@ -230,6 +230,56 @@
           }
         ],
         "label": "Tabs"
+      },
+
+
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Categorization",
+            "elements": [
+              {
+                "type": "Category",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/tab1boolean"
+                  }
+                ],
+                "label": "Tab A"
+              },
+              {
+                "type": "Category",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "options": {
+                      "multi": true
+                    },
+                    "scope": "#/properties/tab2text"
+                  }
+                ],
+                "label": "Tab B"
+              },
+              {
+                "type": "Category",
+                "elements": [
+                  {
+                    "type": "Control",
+                    "scope": "#/properties/textitems"
+                  }
+                ],
+                "label": "Tab C"
+              }
+            ],
+            "options": {
+              "variant": "stepper",
+              "showNavButtons": true
+            }
+          }
+        ],
+        "label": "Stepper Variant"
       }
     ]
   }

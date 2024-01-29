@@ -11,6 +11,7 @@
           :uischema="jf.uischema"
           :data="jf.data ?? {}"
           :renderers="vanillaRenderers"
+          :i18n="i18n"
       />
     </article>
 
@@ -21,6 +22,7 @@
           :uischema="jf.uischema"
           :data="jf.data ?? {}"
           :renderers="renderersBop"
+          :i18n="i18n"
       />
     </article>
 
@@ -74,8 +76,9 @@ details textarea {
 }
 </style>
 
-<script setup>
-import {JsonForms} from "@jsonforms/vue";
+<script setup lang="ts">
+import type {JsonFormsRendererRegistryEntry} from "@jsonforms/core";
+import {JsonForms, type MaybeReadonly} from "@jsonforms/vue";
 import {vanillaRenderers} from "@jsonforms/vue-vanilla";
 import boplusVueVanillaRenderers from "../src/vue3/index";
 import jfDefault from "./jsonforms/default.forms.json";
@@ -83,14 +86,22 @@ import jfAddProps from "./jsonforms/object_additional_properties.forms.json";
 
 const jf = jfDefault;//jfAddProps;//jfDefault
 
-const renderers = Object.freeze([
+const renderers:MaybeReadonly<JsonFormsRendererRegistryEntry[]> = Object.freeze([
   ...vanillaRenderers,
 ]);
-const renderersBop = Object.freeze([
+const renderersBop:MaybeReadonly<JsonFormsRendererRegistryEntry[]> = Object.freeze([
   ...vanillaRenderers,
   ...boplusVueVanillaRenderers,
 ]);
 
+const catalogueDe:Record<string, string> = {
+  next:"weiter",
+  back:"zurück",
+};
+const i18n = {
+  locale: "de",
+  translate: (key:string, defaultMessage?:string) => catalogueDe[key] ?? defaultMessage,
+}
 </script>
 
 

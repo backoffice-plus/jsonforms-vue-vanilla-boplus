@@ -1,9 +1,13 @@
 <template>
   <div :class="styles.categorization.root">
-    <div :class="styles.categorization.category">
+    <div :class="[styles.categorization.category,{isStepper:isStepper}]">
+
+      <template
+          v-for="(item, index) in categories"
+          :key="`tab-${index}`"
+        >
+
       <div
-        v-for="(item, index) in categories"
-        :key="`tab-${index}`"
         @click="selected = index"
       >
         <!--
@@ -17,10 +21,18 @@
           :class="[selected === index ? styles.categorization.selected : '']"
           :disabled="!item.isEnabled"
         >
+          <span v-if="isStepper">{{ index }}</span>
+
           <!--          {{ item.element.i18n ? item.element.i18n : item.element.label }}-->
-          {{ item.element.label }}
+          <span>{{ item.element.label }}</span>
         </button>
       </div>
+
+        <figure v-if="isStepper && index!==categories.length-1" />
+
+      </template>
+
+
     </div>
 
     <div :class="styles.categorization.panel">
@@ -33,6 +45,18 @@
         :cells="layout.cells"
       />
     </div>
+
+    <footer v-if="showNavButtons">
+
+      <div @click="selected=selected-1" v-if="selected>0">
+        <button :disabled="!categories[selected-1].isEnabled" v-text="t('back', 'back')" />
+      </div>
+
+      <div @click="selected=selected+1" v-if="selected+1<=categories.length-1">
+        <button :disabled="!categories[selected+1].isEnabled" v-text="t('next','next')" />
+      </div>
+
+    </footer>
   </div>
 </template>
 
@@ -62,7 +86,7 @@ import {
 } from '@jsonforms/vue';
 import type { RendererProps } from '@jsonforms/vue';
 import { ControlWrapper } from '@jsonforms/vue-vanilla';
-import { useBoPlusLayout } from './utils';
+import {useBoPlusLayout, useTranslator} from './utils';
 
 /**
  * @see https://github.com/eclipsesource/jsonforms-vuetify-renderers/blob/main/vue2-vuetify/src/layouts/CategorizationRenderer.vue
@@ -80,12 +104,18 @@ const layoutRenderer = defineComponent({
   setup(props: RendererProps<Layout>) {
     //const activeCategory = ref(0);
     const ajv = createAjv();
-    //const t = useTranslator();
+    const t = useTranslator();
+
+    const c = useBoPlusLayout(useJsonFormsLayout(props));
+    const isStepper = 'stepper' === c.appliedOptions?.value.variant
+    const showNavButtons = isStepper && !!c.appliedOptions?.value.showNavButtons
+
     return {
-      ...useBoPlusLayout(useJsonFormsLayout(props)),
+      ...c,
+      isStepper, showNavButtons,
       //activeCategory,
       ajv,
-      //t,
+      t,
     };
   },
   data() {
