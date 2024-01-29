@@ -10,8 +10,9 @@
           :schema="jf.schema"
           :uischema="jf.uischema"
           :data="jf.data ?? {}"
-          :renderers="vanillaRenderers"
+          :renderers="renderers"
           :i18n="i18n"
+          key="vanilla"
       />
     </article>
 
@@ -23,6 +24,7 @@
           :data="jf.data ?? {}"
           :renderers="renderersBop"
           :i18n="i18n"
+          key="bo+"
       />
     </article>
 

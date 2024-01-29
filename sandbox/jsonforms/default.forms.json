@@ -101,9 +101,29 @@
         "additionalProperties": {
           "type": "string"
         }
+      },
+      "anyOf": {
+        "anyOf": [
+          {"$ref": "#/properties/user", "title": "User"},
+          {"$ref": "#/properties/textitems", "title": "Text items"}
+        ]
+      },
+      "oneOf": {
+        "oneOf": [
+          {"$ref": "#/properties/user", "title": "User"},
+          {"$ref": "#/properties/textitems", "title": "Text items"}
+        ]
+      },
+      "allOf": {
+        "allOf": [
+          {"$ref": "#/properties/user", "title": "User"},
+          {"$ref": "#/properties/textitems", "title": "Text items"}
+        ]
       }
     }
   },
+
+
   "uischema": {
     "type": "VerticalLayout",
     "elements": [
@@ -184,6 +204,7 @@
         ],
         "label": "Const"
       },
+
       {
         "type": "Group",
         "elements": [
@@ -195,6 +216,43 @@
         "label": "Array of Objects"
       },
 
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/textitems",
+            "options": {
+              "detail": {
+                "type": "VerticalLayout",
+                "elements": [
+                  {
+                    "type": "HorizontalLayout",
+                    "elements": [
+                      {
+                        "type": "Control",
+                        "scope": "#/properties/bool"
+                      },
+                      {
+                        "type": "Control",
+                        "scope": "#/properties/number"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Control",
+                    "options": {
+                      "multi": true
+                    },
+                    "scope": "#/properties/text"
+                  }
+                ]
+              }
+            }
+          }
+        ],
+        "label": "Array of Objects with Details"
+      },
 
 
       {
@@ -280,6 +338,38 @@
           }
         ],
         "label": "Stepper Variant"
+      },
+
+
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/oneOf"
+          }
+        ],
+        "label": "oneOf"
+      },
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/anyOf"
+          }
+        ],
+        "label": "anyOf"
+      },
+      {
+        "type": "Group",
+        "elements": [
+          {
+            "type": "Control",
+            "scope": "#/properties/allOf"
+          }
+        ],
+        "label": "allOf"
       }
     ]
   }
