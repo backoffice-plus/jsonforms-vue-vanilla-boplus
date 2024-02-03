@@ -2,7 +2,7 @@
 
 This is a set of vanilla renderers for JSON Forms 3.2 for Vue 3. Most renderers are direct ports from the [Vue 2 Vuetify renderer set](https://github.com/eclipsesource/jsonforms-vuetify-renderers) and thus fill the gap of missing renderers from the [Vue 3 Vanilla renderer set](https://github.com/eclipsesource/jsonforms/tree/master/packages/vue-vanilla).
 
-For JSON Forms 3.0, here is an older version that still contains the Object and OneOf Renderer https://github.com/backoffice-plus/jsonforms-vue-vanilla-boplus/tree/v0.0.10
+Here is a comparison of all renderers: [Example Page](https://backoffice-plus.github.io/jsonforms-vue-vanilla-boplus-example/)
 
 ## Installation
 Using npm:
@@ -47,3 +47,6 @@ https://jsonforms.io/docs/renderer-sets
 | string (format: time)     | Time             |       Time         |      ⚠️      |    ️ ✔️      |       ✔️        |
 | string (format: datetime) | DateTime         |      DateTime      |      ⚠️      |    ️ ✔️      |       ✔️        |
 
+## Older Version
+
+For JSON Forms 3.0, here is an older version that still contains the Object and OneOf Renderer https://github.com/backoffice-plus/jsonforms-vue-vanilla-boplus/tree/v0.0.10
