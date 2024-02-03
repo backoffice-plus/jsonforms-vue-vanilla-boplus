@@ -1,6 +1,8 @@
 # BO+ Vue Vanilla Renderer 
 
-This is a set of vanilla renderers for JSON Forms 3.0 for Vue 3. Most renderers are direct ports from the [Vue 2 Vuetify renderer set](https://github.com/eclipsesource/jsonforms-vuetify-renderers) and thus fill the gap of missing renderers from the [Vue 3 Vanilla renderer set](https://github.com/eclipsesource/jsonforms/tree/master/packages/vue-vanilla).
+This is a set of vanilla renderers for JSON Forms 3.2 for Vue 3. Most renderers are direct ports from the [Vue 2 Vuetify renderer set](https://github.com/eclipsesource/jsonforms-vuetify-renderers) and thus fill the gap of missing renderers from the [Vue 3 Vanilla renderer set](https://github.com/eclipsesource/jsonforms/tree/master/packages/vue-vanilla).
+
+For JSON Forms 3.0, here is an older version that still contains the Object and OneOf Renderer https://github.com/backoffice-plus/jsonforms-vue-vanilla-boplus/tree/v0.0.10
 
 ## Installation
 Using npm:
@@ -34,11 +36,9 @@ https://jsonforms.io/docs/renderer-sets
 | Enum                      | RadioGroup       |        Enum        |      ❌      |      ✔️      |       ✔️        |
 | oneOf (const / title)     | Autocomplete     |     EnumOneOf      |      ❌      |      ✔️      |       ✔️        |
 | oneOf (const / title)     | RadioGroup       |     EnumOneOf      |      ❌      |      ✔️      |       ✔️        |
-| Object                    | Vertical grid    |         -          |      ❌      |      ✔️      |       ✔️        |
 | Array of objects          | Table            |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
 | Array of objects          | List with Detail |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
 | Array of enums            | Multiple Choice  |     ArrayList      |      ❌      |      ✔️      |       ✔️        |
-| oneOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
 | allOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
 | anyOf                     | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
 | Categorization            | Tabs             |         -          |      ❌      |      ✔️      |       ✔️        |
