@@ -19,10 +19,10 @@ import { entry as controlWithTypesEntry } from './ControlWithTypesRenderer.vue';
 
 export default [
   passwordEntry,
-  oneOfEntry,
+  //oneOfEntry,
   allOfEntry,
   anyOfEntry,
-  objectEntry,
+  //objectEntry,
   ObjectEntryWithAdditionalProperties,
   arrayLayoutEntry,
   arrayControlEntry,

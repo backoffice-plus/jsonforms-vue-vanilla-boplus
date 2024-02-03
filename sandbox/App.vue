@@ -84,9 +84,10 @@ import {JsonForms, type MaybeReadonly} from "@jsonforms/vue";
 import {vanillaRenderers} from "@jsonforms/vue-vanilla";
 import boplusVueVanillaRenderers from "../src/vue3/index";
 import jfDefault from "./jsonforms/default.forms.json";
+import jfObsolete32 from "./jsonforms/obsoleteInV32.default.forms.json";
 import jfAddProps from "./jsonforms/object_additional_properties.forms.json";
 
-const jf = jfDefault;//jfAddProps;//jfDefault
+const jf = jfDefault;//jfObsolete32;//jfAddProps;//jfDefault
 
 const renderers:MaybeReadonly<JsonFormsRendererRegistryEntry[]> = Object.freeze([
   ...vanillaRenderers,
