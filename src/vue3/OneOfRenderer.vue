@@ -218,7 +218,7 @@ export default renderer;
 export const entry = {
   renderer: renderer,
 
-  //rank is 3, but must be lower than in EnumOneOfControlRenderer
-  tester: rankWith(1, isOneOfControl),
+  //must hight then 3 (OneOfControl in v3.2.1), but lower than in EnumOneOfControlRenderer (is 5)
+  tester: rankWith(4, isOneOfControl),
 };
 </script>
