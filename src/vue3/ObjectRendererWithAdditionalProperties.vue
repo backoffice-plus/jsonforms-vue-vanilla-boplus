@@ -83,7 +83,9 @@ const controlRenderer = defineComponent({
 export default controlRenderer;
 export const entry: JsonFormsRendererRegistryEntry = {
   renderer: controlRenderer,
-  tester: rankWith(3, and(isObjectControl, schemaMatches((schema) => {
+
+  //must be higher then ObjectRenderer (is 3)
+  tester: rankWith(4, and(isObjectControl, schemaMatches((schema) => {
     // do not support - additionalProperties === true - since then the type should be any and we won't know what kind of renderer we should use for new properties
     const enabled = "additionalProperties" in schema && false !== schema?.additionalProperties;
     const isObject = enabled && 'object' === typeof schema?.additionalProperties;
