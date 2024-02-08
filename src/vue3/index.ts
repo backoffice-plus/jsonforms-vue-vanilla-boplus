@@ -17,7 +17,7 @@ import { entry as dateTimeEntry } from './DateTimeRenderer.vue';
 import { entry as timeEntry } from './TimeRenderer.vue';
 import { entry as controlWithTypesEntry } from './ControlWithTypesRenderer.vue';
 
-export default [
+export const boplusVueVanillaRenderers =  [
   passwordEntry,
   oneOfEntry,
   allOfEntry,

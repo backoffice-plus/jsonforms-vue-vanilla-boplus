@@ -1,4 +1,2 @@
-import boplusVueVanillaRenderers from './vue3';
-export default boplusVueVanillaRenderers;
-
+export {boplusVueVanillaRenderers} from './vue3';
 export {bopStyles} from './utils'
