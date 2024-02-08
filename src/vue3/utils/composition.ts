@@ -1,5 +1,3 @@
-import merge from 'lodash/merge';
-import { defaultStyles } from '../../utils';
 export * from '../../utils/composition';
 import {
   useComputedLabel,
@@ -17,11 +15,8 @@ import type Ajv from 'ajv';
 
 export const useBoPlusLayout = <I extends { layout: any }>(input: I) => {
   const layout = useVanillaLayout(input);
-  const uischemaStyles = input.layout.value.uischema?.options?.styles;
-
   return {
-    ...layout,
-    styles: merge(layout.styles, defaultStyles, uischemaStyles ?? {}),
+    ...layout
   };
 };
 
@@ -39,7 +34,6 @@ export const useBoPlusVanillaControl = <
 
   return {
     ...control,
-    styles: merge(control.styles, defaultStyles),
     computedLabel,
   };
 };

@@ -12,14 +12,15 @@ $ npm install @backoffice-plus/jsonforms-vue-vanilla
 
 ## Usage
 ```js
-
-import {vanillaRenderers} from "@jsonforms/vue-vanilla";
-import {boplusVanillaRenderers} from "@backoffice-plus/jsonforms-vue-vanilla";
+import {vanillaRenderers, defaultStyles} from "@jsonforms/vue-vanilla";
+import {boplusVanillaRenderers, bopStyles} from "@backoffice-plus/jsonforms-vue-vanilla";
 
 const jsonFormRenderers = Object.freeze([
     ...vanillaRenderers,
     ...boplusVanillaRenderers,
 ]);
+
+provide('styles', {...defaultStyles,...bopStyles});
 
 ```
 

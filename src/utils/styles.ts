@@ -1,4 +1,4 @@
-export const defaultStyles: BopStyles = {
+export const bopStyles: BopStyles = {
   categorization: {
     root: 'categorization',
     category: 'tabs',
@@ -39,6 +39,7 @@ export const defaultStyles: BopStyles = {
     root: 'control-with-types'
   },
 };
+export const defaultStyles = bopStyles;
 
 export interface BopStyles {
   categorization: {

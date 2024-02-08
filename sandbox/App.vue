@@ -81,11 +81,13 @@ details textarea {
 <script setup lang="ts">
 import type {JsonFormsRendererRegistryEntry} from "@jsonforms/core";
 import {JsonForms, type MaybeReadonly} from "@jsonforms/vue";
-import {vanillaRenderers} from "@jsonforms/vue-vanilla";
+import {vanillaRenderers, defaultStyles} from "@jsonforms/vue-vanilla";
 import boplusVueVanillaRenderers from "../src/vue3/index";
 import jfDefault from "./jsonforms/default.forms.json";
 import jfObsolete32 from "./jsonforms/obsoleteInV32.default.forms.json";
 import jfAddProps from "./jsonforms/object_additional_properties.forms.json";
+import {provide} from "vue";
+import {bopStyles} from "../src";
 
 const jf = jfDefault;//jfObsolete32;//jfAddProps;//jfDefault
 
@@ -96,6 +98,7 @@ const renderersBop:MaybeReadonly<JsonFormsRendererRegistryEntry[]> = Object.free
   ...vanillaRenderers,
   ...boplusVueVanillaRenderers,
 ]);
+provide('styles', {...defaultStyles,...bopStyles});
 
 const catalogueDe:Record<string, string> = {
   next:"weiter",

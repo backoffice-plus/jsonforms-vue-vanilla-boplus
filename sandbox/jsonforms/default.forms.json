@@ -346,7 +346,12 @@
         "elements": [
           {
             "type": "Control",
-            "scope": "#/properties/oneOf"
+            "scope": "#/properties/oneOf",
+            "options": {
+              "styles": {
+                "oneOf": {"root": "oneof MyOneOf"}
+              }
+            }
           }
         ],
         "label": "oneOf"
